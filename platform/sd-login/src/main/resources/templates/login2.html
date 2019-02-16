@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>登录</title>
+    <script type="text/javascript" src="${request.contextPath}/skins/js/jquery.min.js"></script>
+	<script type="text/javascript" src="${request.contextPath}/skins/js/jquery.md5.js"></script>
+</head>
+<body>
+<div class="loginBigBox">
+	<div class="loginBox">
+	    <form action=""  id="form1">
+		<h1 class="loginTit">用户登录</h1>
+		<input type="hidden" id="rtservice" name="rtservice" value="${rtservice!?html}" />
+		<input type="text" id="schoolcode"    placeholder="${aaa!?html}">
+		<input type="text" id="username" name="username" placeholder="账号">
+		<input type="password" id="pwd" name="pwd" placeholder="密码">
+		<input class="signIn" type="submit" value="登录">
+		</form>
+	</div>
+</div>
+</body>
+	<script type="text/javascript">
+$(function () {
+   $("#form1").submit(function(e){
+	   if($("#username").val()==""){
+		   alert("用户名不能为空!");
+		   return false;
+	   }
+	   if($("#pwd").val()==""){
+		   alert("密码不能为空!");
+		   return false;
+	   }
+	   $("#username").val($("#username").val());
+	   $("#pwd").val($.md5($("#pwd").val())); 
+	    return true;
+	});
+});
+</script>
+</html>
