@@ -1,0 +1,131 @@
+package com.authstr.ff.utils.web.sevice;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+import com.authstr.ff.utils.exception.AuthstrException;
+import com.authstr.ff.utils.model.AbstractModel;
+import com.authstr.ff.utils.web.dao.BasicDao;
+
+@Component
+public class AbstractService implements InterfaceService{
+	  @Autowired
+	  @Qualifier(value="basicDaoImpl")
+	  public BasicDao basicDao;
+	  
+	  /**
+	 * 通过id从数据库获取指定的对象
+	 * @param clazz
+	 * @param id
+	 * @return
+	 * @time 2018年11月4日 下午4:01:10
+	 * @author authstr
+	 */
+	public <T> T get(Class<T> clazz, Serializable id){
+		return basicDao.get(clazz, id);
+	  }
+	
+	
+	   /**
+	 * 通过id从数据库获取指定对象的指定字段
+	 * @param clazz
+	 * @param id
+	 * @param fields
+	 * @return
+	 * @time 2018年11月4日 下午4:24:40
+	 * @author authstr
+	 */
+	public <T> T get(Class<T> clazz, Serializable id, String[] fields) {
+		return basicDao.get(clazz, id,fields);
+	 }
+	
+	/**
+	 * 判断一个对象里一些属性的值是否具有唯一性
+	 * @Param entity 实体对象
+	 * @param fields 字段名称
+	 * @return
+	 * @time 2018年11月1日 上午11:23:56
+	 * @author authstr
+	 */
+    public <T extends AbstractModel> boolean isUnique(T entity, String[] fields) {
+        return this.basicDao.isUnique(entity, fields);
+    }
+    
+    /**
+     * 将一个对象保存到数据库
+     * @param entity
+     * @return
+     * @time 2018年11月4日 下午4:27:26
+     * @author authstr
+     */
+    public Serializable save(Object entity) {
+        return this.basicDao.save(entity);
+    }
+    
+    /**
+     * 保存model集合
+     * @param listEntity
+     * @return
+     * @time 2018年11月13日 上午11:14:34
+     * @author authstr
+     */
+    public int saveList(List listEntity) {
+        return basicDao.saveList(listEntity).size();
+    }
+	
+    /**
+     * 将一个对象更新到数据库(覆盖)
+     * @param entity
+     * @time 2018年11月13日 上午11:07:58
+     * @author authstr
+     */
+    public void coverUpdata(Object entity){
+		updata(entity,true);
+    }
+    
+    /**
+     * 将一个对象更新到数据库
+     * @param entity
+     * @time 2018年11月13日 上午11:07:38
+     * @author authstr
+     */
+    public void updata(Object entity){
+    	updata(entity,false);
+    }
+    
+    /**
+     * 更新model集合
+     * @param listEntity
+     * @time 2018年11月13日 上午11:22:18
+     * @author authstr
+     */
+    public void updateList(List listEntity) {
+        basicDao.updateList(listEntity);
+    }
+    
+    public void updata(Object entity,boolean isCopy){
+    	if(isCopy){
+    		  Object no = get(entity.getClass(), ((AbstractModel)entity).getId().toString());
+    		  if(no==null)throw new AuthstrException("该model没有id,无法更新");
+    		  BeanUtils.copyProperties(entity, no);
+    		  basicDao.update(no);
+    	}else{
+    		 basicDao.update(entity);
+    	}
+    }
+    
+    public int remove(Class clazz, Serializable id) {
+        return this.basicDao.remove(clazz, id);
+    }
+    
+    public int removeIds(Class clazz, Serializable[] ids) {
+        return this.basicDao.removeIds(clazz, ids);
+    }
+    
+	
+}
