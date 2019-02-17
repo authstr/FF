@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<meta content="always" name="referrer">
+		<#include "../common/header-inner.html"> 
+ </head>
+<body>
+	<div  class="container-fluid J_containerWarp">
+		<!-- col-xs-*  始终水平排列-->
+		<div class="row" >
+			<div class="col-xs-12 ">
+				  <div class="J_conWarp">
+				  	<div class="g-total-pd " id="jqGridWarp">
+				  		<div class="row">
+							<div class="col-xs-12">
+						  		<div class="button-inline g-fl">
+							  		<a class="gbn gbn-add" href="javascript:" onclick="M.openAdd();"><i></i>添加</a>
+									<a class="gbn gbn-edit" href="javascript:" onclick="M.edit();"  ><i></i>编辑</a>
+									<a class="gbn gbn-del" href="javascript:" onclick="M.remove();" ><i></i>删除</a>
+							    </div>
+								<form class="form-inline g-fr" role="form" id="queryform">
+									<div class="input-group g-search-box">
+										<input type="text" class="form-control J_placeholder" id="keyword" name="keyword" value="" placeholder="编码分类/编码值">
+										<span class="input-group-btn">
+											<a class="btn gbn gbn-search" href="javascript:M.query();"><i></i>搜索</a>
+										</span>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="row">
+				  				<table id="jqGridTable" ></table><div id="jqGridTablePager"></div>
+						</div>
+				    </div>
+				  </div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+var grid = [
+{"hidden":true,"align":"left","sortable":true,"name":"id","resizable":true,"label":"id"},
+{"hidden":false,"align":"left","sortable":false,"name":"username","resizable":true,"label":"用户名"},
+{"hidden":false,"align":"left","sortable":false,"name":"sex","resizable":true,"label":"性别"},
+{"hidden":false,"align":"left","sortable":false,"name":"phone","resizable":true,"label":"手机号"},
+{"hidden":false,"align":"left","sortable":false,"name":"email","resizable":true,"label":"邮箱"}
+];
+var myGrid = null;
+var jqGridTable1 =null;
+var M={
+	resize:function(){
+		$(".J_containerWarp").height($(window).height());
+	    $(".J_containerWarp").niceScroll({});
+	    var width = $("#jqGridWarp").width();
+		$("#jqGridTable").setGridWidth(width-2);
+		$("#jqGridTable").setGridHeight($(window).height()-135);
+	},
+	query:function(){
+		jqGridTable1.searchMethod($('#queryform').serializeArray());
+	},
+	openAdd:function(){
+		window.location.href="${request.contextPath}/p/view/basecode/edit";
+	},
+	edit:function(){
+		ids = jqGridTable1.selectOne();
+		if(ids != null){
+			window.location.href="${request.contextPath}/p/view/basecode/edit?id="+ids;
+		}
+	},
+	remove:function(){
+		ids = jqGridTable1.selectMany();
+		if(ids != null){
+			Message.confirm("确认要删除吗?",function(){
+				$.post("${request.contextPath}/basecode/v1/manager/remove",{"ids":ids},function(o){
+					if(o.code==1){
+						Message.success("操作成功");
+						M.query();
+					}else{
+						Message.error(o.msg);
+					}
+				});
+			});
+			
+		}
+	},
+	init2:function(){
+		jqGridTable1 = new myJqGrid({url:"${request.contextPath}/user/query",colModel:grid,heightMinus: 35,widthMinus:10});
+	    jqGridTable1.createJqGrid();
+
+	}
+};
+
+window.onload=window.onresize=function(){
+   	M.init2();
+    M.resize();
+    
+    $("#keyword").keydown(function (e) {
+        if (e.keyCode == 13) {
+            M.query();
+            return false;
+        }
+    });
+    
+}
+</script>
+<#include "../common/footer-inner.html"> 
+</html>

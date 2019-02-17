@@ -1,0 +1,56 @@
+package com.authstr.sd.basic.controller;
+
+import java.util.Enumeration;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.authstr.ff.utils.login.LoginThreadLocal;
+
+
+@Controller
+public class PageController  {
+	
+	@Value("${com.authstr.system.skin}")
+    private String skin;
+	@RequestMapping("/")
+    public ModelAndView main(ModelAndView model) {
+        model.addObject("username", LoginThreadLocal.get().getUsername());
+		model.addObject("skin", skin);
+        model.setViewName(skin + "/index");
+        return model;
+    }
+	/***
+     * 该方法访问时会跳转 pkg/page 页面 可以通过?a=1&b=2的方式传值或者直接用post方法提交参数
+     * @param model
+     * @param pkg
+     * @param page
+     * @param rqRequest
+     * @return
+     */
+    @RequestMapping("p/view/{pkg}/{page}")
+    public ModelAndView page_view(ModelAndView model,@PathVariable("pkg") String pkg, 
+    		@PathVariable("page") String page,HttpServletRequest rqRequest) {
+    	//将所有参数放到modelAndView
+        if (rqRequest.getParameterNames().hasMoreElements()) {
+            Enumeration<String> pm = rqRequest.getParameterNames();
+            while (pm.hasMoreElements()) {
+                String key = pm.nextElement();
+                if (key.equals(pkg) || key.equals(page)) {
+                    continue;
+                }
+                model.addObject(key, rqRequest.getParameter(key));
+            }
+        }
+        model.setViewName(skin + "/" + pkg + "/" + page);
+        return model;
+    }
+}

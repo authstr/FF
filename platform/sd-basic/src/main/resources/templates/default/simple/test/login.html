@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)http://www.17sucai.com/preview/735710/2017-05-09/html4/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>登录</title>
+<script type="text/javascript" src="${request.contextPath}/skins/js/jquery.min.js"></script>
+<script type="text/javascript" src="${request.contextPath}/skins/js/jquery.md5.js"></script>
+<link rel="stylesheet" href="${request.contextPath}/skins/default/simple/css/login_page.css" type="text/css" media="all" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="keywords" content="后台登录">
+</head>
+<body style="background: url(${request.contextPath}/skins/default/simple/img/login_page/back_img.jpg)no-repeat;">
+<!--header start here-->
+<div class="login-form">
+			<div class="top-login">
+				<span><img src="${request.contextPath}/skins/default/simple/img/login_page/login_img.png" alt=""></span>
+			</div>
+			<h1>登录</h1>
+			<div class="login-top">
+			<form action="ae"  id="form1">
+				<div class="login-ic">
+					<input type="hidden" id="rtservice" name="rtservice" value="${rtservice!?html}" />
+					<i style=" background: url(${request.contextPath}/skins/default/simple/img/login_page/user.png)no-repeat 6px 6px;"></i>
+					<input type="text" value=""  id="username" name="username" placeholder="账号"
+						onfocus="this.value = &#39;&#39;;" 
+						onblur="if (this.value == &#39;&#39;) {this.value = &#39;User name&#39;;}">
+					<div class="clear"> </div>
+				</div>
+				<div class="login-ic">
+					<i class="icon" style=" background: url(${request.contextPath}/skins/default/simple/img/login_page/password.png)no-repeat 6px 6px;  "></i>
+					<input type="password" value=""  id="pwd" name="pwd" placeholder="密码"
+						onfocus="this.value = &#39;&#39;;" 
+						onblur="if (this.value == &#39;&#39;) {this.value = &#39;password&#39;;}">
+					<div class="clear"> </div>
+				</div>
+			
+				<div class="log-bwn">
+					<input type="submit" value="登录">
+				</div>
+				</form>
+			</div>
+			<p class="copy">© 2016 xxxxxxxxxxx</p>
+</div>		
+<script type="text/javascript">
+$(function () {
+   $("#form1").submit(function(e){
+	   if($("#username").val()==""){
+		   alert("用户名不能为空!");
+		   return false;
+	   }
+	   if($("#pwd").val()==""){
+		   alert("密码不能为空!");
+		   return false;
+	   }
+	   $("#username").val($("#username").val());
+	   $("#pwd").val($.md5($("#pwd").val())); 
+	    return true;
+	});
+});
+</script>
+
+</body></html>
