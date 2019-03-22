@@ -2,18 +2,21 @@ package com.authstr.ff.utils.web.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.authstr.ff.utils.base.StringUtils;
-import com.authstr.ff.utils.exception.AuthstrException;
+import com.authstr.ff.utils.exception.ErrorException;
 import com.authstr.ff.utils.exception.MsgException;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+/**
+ * 控制层的父类,主要对控制层的异常进行捕获,通过接口返回或者进行其他处理
+ */
 @Component
 public class AbstractController {
 	protected Logger log = LogManager.getLogger(this.getClass());
@@ -21,39 +24,49 @@ public class AbstractController {
     @ResponseBody
     public Map exceptionHandler(Exception ex) {
         HashMap<String, Object> model = new HashMap<String, Object>();
-        if (ex instanceof MsgException) {//出现普通异常
+		//如果是消息型异常
+        if (ex instanceof MsgException) {
         	MsgException msg=(MsgException) ex;
-        	if(StringUtils.hasText(msg.getCode())){//如果异常里存在code信息
+
+			//尝试从异常获取错误代码,没有则使用默认的错误代码
+        	if(StringUtils.hasText(msg.getCode())){
         		  model.put(ControllerConstant.CODE, msg.getCode());
         	}else{
-        		  model.put(ControllerConstant.CODE, ControllerConstant.SYSTEM_ERROR);//没有则设置为-1
+        		  model.put(ControllerConstant.CODE,MsgEnum.UNKNOWN_ERROR.getCode());
         	}
-            model.put(ControllerConstant.MSG, ex.getMessage());//设置消息
-            if(msg.getData()!=null)model.put(ControllerConstant.DATA, msg.getData());//如果有,设置相关数据
+
+			//尝试从异常获取错误说明,没有则使用默认的错误说明
+			if(StringUtils.hasText(msg.getMessage())){
+				model.put(ControllerConstant.MSG, msg.getMessage());
+			}else{
+				model.put(ControllerConstant.MSG,MsgEnum.UNKNOWN_ERROR.getMessage());
+			}
+
+			//获取异常详细数据,如果有,进行返回
+            if(msg.getData()!=null){
+            	model.put(ControllerConstant.DATA, msg.getData());
+            }
+
             
-        } else if(ex instanceof AuthstrException){//出现内部异常(内部提示,不显示到前端)
-        	  model.put(ControllerConstant.CODE, ControllerConstant.SYSTEM_ERROR);//设置为-1
-        	  model.put(ControllerConstant.MSG, ControllerConstant.ERROR_MSG);
-        	  log.error("系统出现异常:" + ex.getMessage());
+        } else if(ex instanceof ErrorException){
+        	//出现错误型异常,在返回值显示未知异常,具体错误消息进行记录和打印
+			model.put(ControllerConstant.CODE,MsgEnum.UNKNOWN_ERROR.getCode());
+			model.put(ControllerConstant.MSG,MsgEnum.UNKNOWN_ERROR.getMessage());
+			ex.printStackTrace();
+			log.error("系统执行出现异常:" + ex.getMessage());
         }
-//        else if (ex instanceof CapecAPIException) {
-//            model.put(APIModel.CODE, ex.getMessage());
-//        } else if (ex instanceof ConstraintViolationException) {
-//            model.put(APIModel.CODE, APIModel.SYSTEM_ERROR);
-//            Set ess = ((ConstraintViolationException)ex).getConstraintViolations();
-//            model.put(APIModel.MSG, ess.iterator().next());
-//        } 
         else {
-            model.put(ControllerConstant.CODE, ControllerConstant.SYSTEM_ERROR);
-            this.log.error( ControllerConstant.ERROR_MSG+":" + ex.getMessage());
+			model.put(ControllerConstant.CODE,MsgEnum.UNKNOWN_ERROR.getCode());
+			model.put(ControllerConstant.MSG,MsgEnum.UNKNOWN_ERROR.getMessage());
+			ex.printStackTrace();
+            this.log.error( "系统出现未知异常 :" + ex.getMessage());
         }
-        ex.printStackTrace();
         return model;
     }
 
-	    public Map success() {
-	        HashMap<String, Integer> map = new HashMap<String, Integer>();
-	        map.put(ControllerConstant.CODE, ControllerConstant.SYSTEM_SUCCESS);
-	        return map;
-	    }
+	public Map success() {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put(MsgEnum.SUCCESS.getCode(),MsgEnum.SUCCESS.getMessage());
+		return map;
+	}
 }

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.authstr.ff.utils.exception.AuthstrException;
+import com.authstr.ff.utils.exception.ErrorException;
 import com.authstr.ff.utils.model.AbstractModel;
 import com.authstr.ff.utils.web.dao.BasicDao;
 
@@ -111,7 +111,7 @@ public class AbstractService implements InterfaceService{
     public void updata(Object entity,boolean isCopy){
     	if(isCopy){
     		  Object no = get(entity.getClass(), ((AbstractModel)entity).getId().toString());
-    		  if(no==null)throw new AuthstrException("该model没有id,无法更新");
+    		  if(no==null)throw new ErrorException("该model没有id,无法更新");
     		  BeanUtils.copyProperties(entity, no);
     		  basicDao.update(no);
     	}else{

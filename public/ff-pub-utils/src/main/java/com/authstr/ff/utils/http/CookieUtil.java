@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.util.StringUtils;
 
-import com.authstr.ff.utils.exception.AuthstrException;
+import com.authstr.ff.utils.exception.ErrorException;
 
 
 /** 
@@ -141,7 +141,7 @@ public class CookieUtil {
 			res.addCookie(cookie);
 		} catch (Exception e) {
 			log.error(e);
-			throw new AuthstrException("创建Cookie错误");
+			throw new ErrorException("创建Cookie错误");
 		}
 	}
 	
@@ -164,7 +164,7 @@ public class CookieUtil {
 			}
 		} catch (Exception e) {
 			log.error(e);
-			throw new AuthstrException("创建Cookie错误");
+			throw new ErrorException("创建Cookie错误");
 		}
 	}
 	

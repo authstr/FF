@@ -5,7 +5,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
-import com.authstr.ff.utils.exception.AuthstrException;
+import com.authstr.ff.utils.exception.ErrorException;
 
 public class ThreeDESUtils
 {
@@ -49,7 +49,7 @@ public class ThreeDESUtils
         }
         catch (Exception e) {
             e.printStackTrace();
-            throw new AuthstrException("base64加密过程出错!");
+            throw new ErrorException("base64加密过程出错!");
         }
     }
 
@@ -63,7 +63,7 @@ public class ThreeDESUtils
         }
         catch (Exception e) {
             e.printStackTrace();
-            throw new AuthstrException("base64加密过程出错!");
+            throw new ErrorException("base64加密过程出错!");
         }
     }
 

@@ -1,10 +1,8 @@
 package com.authstr.ff.utils.web.dao;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -14,6 +12,8 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
@@ -24,7 +24,7 @@ import com.authstr.ff.utils.base.ObjectUtils;
 import com.authstr.ff.utils.base.ReflectionUtils;
 import com.authstr.ff.utils.base.StringUtils;
 import com.authstr.ff.utils.exception.Assert;
-import com.authstr.ff.utils.exception.AuthstrException;
+import com.authstr.ff.utils.exception.ErrorException;
 import com.authstr.ff.utils.model.AbstractModel;
 import com.authstr.ff.utils.page.AbstractPage;
 import com.authstr.ff.utils.page.Page;
@@ -517,7 +517,6 @@ public class AbstractDao implements InterfaceDao{
 	
 	 /**
 	 * 设置分页查询结果数据
-	 * @param qlstring sql语句
 	 * @param pageModel 分页对象
 	 * @param returnType 返回值类型
 	 * @param query query对象
@@ -529,7 +528,7 @@ public class AbstractDao implements InterfaceDao{
 		 if(returnType == null||Map.class.equals(returnType) || TreeMap.class.equals(returnType) || HashMap.class.equals(returnType) || LinkedHashMap.class.equals(returnType)){
 			 pageModel.setRecord(li);
 		 }else{
-			 throw new AuthstrException("分页查询结果返回值类型设置不正确,类型为["+returnType.getName()+"]");
+			 throw new ErrorException("分页查询结果返回值类型设置不正确,类型为["+returnType.getName()+"]");
 		 }
 	 }
 	
