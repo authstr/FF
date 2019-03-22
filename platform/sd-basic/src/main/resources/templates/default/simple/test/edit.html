@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<meta content="always" name="referrer">
+		<#include "../common/header-inner.html">
+</head>
+<body>
+	<div class="J_conWarp g-lr-mg g-warning-box">
+		<h4 class="g-title"> <a href="javascript:history.back()" style="font-size: 16px; color: black; " >< 返回</a></h4>
+		<div class="J_containerWarp">
+			<div  class="container-fluid g-t-mg2">
+				<div class="row" >
+					<div class="col-xs-12" >
+							<form class="form-horizontal" role="form" id="form1">
+							<input type="hidden" name="id" id="id" value="${id!?html}"/>
+
+							<div class="form-group">
+								<label class="col-xs-2 control-label"><em class="text-red">*</em>用户名</label>
+								<div class="col-xs-10">
+									<input type="text" class="form-control"  style="width:400px" id="name" name="name"
+										   placeholder="招聘会名称 ">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-xs-2 control-label"><em class="text-red">*</em>密码</label>
+								<div class="col-xs-10">
+									<input type="text" class="form-control"  style="width:400px" id="password" name="password"
+										   placeholder="密码">
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<label class="col-xs-2 control-label"><em class="text-red">*</em>邮箱</label>
+								<div class="col-xs-10">
+									<textarea type="text" class="form-control"  style="width:400px;height:120px;resize:none;" id="email" name="email"
+									placeholder="邮箱"></textarea>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-xs-2 control-label">备注</label>
+								<div class="col-xs-10">
+									<textarea type="text" class="form-control"  style="width:400px;height:120px;resize:none;" id="remark" name="remark"
+									placeholder="备注"></textarea>
+								</div>
+							</div>
+
+
+							</form>
+							<div  class="form-group ">
+								<label class="col-xs-2 control-label"></label>
+								<a class="gbn gbn-m" href="javascript:" onclick="E.save();" >保存</a>
+								<a class="gbn gbn-m gbn-red" href="javascript:" onclick="history.back();" >返回</a>
+							</div>
+					</div>
+				</div>
+			</div>
+	    </div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	window.onload = window.onresize = function() {
+	  $(".J_containerWarp").height($(window).height() - 60);
+	  $(".J_containerWarp").niceScroll({});
+	}
+	var E={
+			save:function(){
+				$.post("${request.contextPath}/user/save",$("#form1").serialize(),function(o){
+					if(o.code==1){
+						Message.success("操作成功");
+						location.href=document.referrer; 
+					}else{
+						Message.error(o.msg);
+					}
+				});
+			},
+			load:function(){
+				$.getJSON("${request.contextPath}/recruitconferenceinfo/v1/get/"+$("#id").val(),function(o){
+					if(o.code ==1){
+						$("#form1").setFormValues(o.data);
+					}
+				});
+			}
+				
+	}
+	$(function(){
+		if(!Utils.isEmpty($("#id").val())){
+			E.load();	
+		}
+	});
+</script>
+		<#include "../common/footer-inner.html"> 
+</html>

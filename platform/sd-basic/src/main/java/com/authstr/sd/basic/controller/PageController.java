@@ -29,7 +29,7 @@ public class PageController  {
         return model;
     }
 	/***
-     * 该方法访问时会跳转 pkg/page 页面 可以通过?a=1&b=2的方式传值或者直接用post方法提交参数
+     * 共用的页面跳转,支持参数的自动添加
      * @param model
      * @param pkg
      * @param page
@@ -50,6 +50,7 @@ public class PageController  {
                 model.addObject(key, rqRequest.getParameter(key));
             }
         }
+        model.addObject("skin", skin);
         model.setViewName(skin + "/" + pkg + "/" + page);
         return model;
     }
