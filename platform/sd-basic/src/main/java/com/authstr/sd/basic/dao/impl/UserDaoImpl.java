@@ -24,8 +24,9 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 		Map kv = new HashMap();
 		sql.append("select  a.*");
 		sql.append(" FROM base_user a ");
+		sql.append(" where 1=1 ");
 		if(StringUtils.hasText(query.getKeyword())){
-			sql.append(" and (a.name like :k) ");
+			sql.append(" and (a.username like :k) ");
 			kv.put("k", "%"+query.getKeyword()+"%");
 		}
 		return super.queryByParamAndValueSqlMap(sql.toString(), kv, query);

@@ -5,6 +5,7 @@ import java.util.Map;
 import com.authstr.ff.model.platform.base.BaseUser;
 import com.authstr.ff.utils.http.RequestPara;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController extends AbstractController {
 		@Autowired
 		UserService userService;
-		
+
+		@Value("${logging.config}")
+		String a;
+
 		@RequestMapping("a")
 		public String  ae(){
 			System.out.println("进入了(01)............................");
@@ -36,6 +40,12 @@ public class UserController extends AbstractController {
 		@RequestMapping("query")
 		 public Map query(QueryCommonPage query, HttpServletRequest request) {
 			Map m = super.success();
+			System.out.println("ddd");
+			this.log.info("11111111111111111");
+			this.log.error("2222");
+			this.log.debug("333");
+			this.log.trace("444");
+			System.out.println(a);
 			RequestPara para=new RequestPara(request);
 			m.put("page", userService.query(query,para));
 			return m;
@@ -48,10 +58,4 @@ public class UserController extends AbstractController {
 			return m;
 		}
 
-		
-		@RequestMapping("../a")
-		public String  ac(){
-			return "返回了";
-		}
-		
 }
