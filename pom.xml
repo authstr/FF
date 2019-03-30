@@ -20,7 +20,7 @@
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<org.springframework.boot.version>2.0.4.RELEASE</org.springframework.boot.version>
+		<org.springframework.boot.version>2.0.3.RELEASE</org.springframework.boot.version>
   </properties>
 
   <dependencies>
@@ -42,6 +42,16 @@
 				<includeSystemScope>true</includeSystemScope>
 				<fork>true</fork>
 			</configuration> -->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
             </plugin>
             <!-- 打包时附加源码  -->
             <plugin>

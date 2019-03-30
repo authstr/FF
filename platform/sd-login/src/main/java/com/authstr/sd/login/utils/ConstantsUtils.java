@@ -14,10 +14,8 @@ import java.util.regex.Pattern;
  */
 
 public class ConstantsUtils {
-	
-	
-	public static void main(String[] args) {
-	}
+
+
 	public static  final String  COOKIE_SCAPTCHA="scaptcha";
 	
 

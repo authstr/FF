@@ -1,5 +1,8 @@
 package com.authstr.sd.login.utils;
 
+import com.authstr.ff.model.platform.base.BaseUser;
+import com.authstr.sd.login.service.inter.LoginAndRegisterService;
+
 /**
  * 登录提示信息的枚举
  */
@@ -47,5 +50,6 @@ public enum LoginInfoEnum  {
 	public void setExplain(String explain) {
 		this.explain = explain;
 	}
-	
+
+
 }

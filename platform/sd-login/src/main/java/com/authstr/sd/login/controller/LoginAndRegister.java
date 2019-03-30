@@ -145,6 +145,7 @@ public class LoginAndRegister extends AbstractController{
 	
 	private void validateCode(String code, HttpServletRequest request) {
         Cookie cookie = CookieUtil.getCookie(request, ConstantsUtils.COOKIE_SCAPTCHA);
+
     	Assert.isTrue(cookie !=null,
 				LoginInfoEnum.The_VerfiCode_Is_Wrong.getCode(),LoginInfoEnum.The_VerfiCode_Is_Wrong.getExplain());//验证码错误
         Assert.isTrue(StringUtils.hasText(code),

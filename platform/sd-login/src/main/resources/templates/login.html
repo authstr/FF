@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
 <base href="<%=basePath%>"> 
 <meta charset="utf-8">
@@ -62,6 +62,8 @@
             <p>版权所有：XXX</p>
         </div>
     </div>
+</body>
+
  <script>
  $(function () {
 	   $("#form1").submit(function(e){
@@ -77,15 +79,13 @@
 		   $("#pwd").val($.md5($("#pwd").val())); 
 		    return true;
 		});
+     var msg = "${msg!}";
+     if(msg!=""){
+         layer.msg(msg);
+     }
 	});
  </script>
-  <script>
-  var msg = "${msg!}";
-  if(msg!=""){
-	  layer.msg(msg);
-  }
-  </script>
 
 
-</body>
+
 </html>

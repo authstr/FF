@@ -3,6 +3,8 @@ package com.authstr.ff.utils.web.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,14 +14,16 @@ import com.authstr.ff.utils.exception.ErrorException;
 import com.authstr.ff.utils.exception.MsgException;
 
 import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  * 控制层的父类,主要对控制层的异常进行捕获,通过接口返回或者进行其他处理
  */
 @Component
 public class AbstractController {
-	protected Logger log = LogManager.getLogger(this.getClass());
+	protected Logger log = LoggerFactory.getLogger(this.getClass());
+
+
+//	protected Logger log = LogManager.getLogger(this.getClass());
 	@ExceptionHandler(value={Exception.class})
     @ResponseBody
     public Map exceptionHandler(Exception ex) {
