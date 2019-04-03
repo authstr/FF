@@ -380,7 +380,7 @@ public class AbstractDao implements InterfaceDao{
 		return getBySQL(sql.toString(),fields,values,returnType);
 	}
 	
-	/* 
+	/**
 	 *通过参数,参数值,返回类型执行查询语句(执行方法)
 	 * @param sql
 	 * @param fields
@@ -477,7 +477,7 @@ public class AbstractDao implements InterfaceDao{
 	 * @author authstr
 	 */
 	public Page queryByParamAndValue(String qlstring, Map<String, Object> paramAndValue, Page page, Class returnType){
-		Query query=createQuery(qlstring,new AbstractPage(),returnType);//获取query对象
+		Query query=createQuery(qlstring,page,returnType);//获取query对象
 		setQueryParameters(query,paramAndValue);//设置参数
 		createRecord(page,returnType,query);//获取查询结果
 		page.setTotal(getTotalCountByParamAndValue(qlstring,paramAndValue));

@@ -15,7 +15,7 @@ public class AbstractPage implements Page{
 	private Integer total;//总数
 	private Integer pageTotal;//总页数
     private Integer rows;//每页条数
-    private Integer page;//当前页
+    private Integer page;//要查询的页
     private List record;//该页数据
 
     @Override

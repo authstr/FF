@@ -12,11 +12,9 @@
   <version>1.0</version>
   <name>sd-basic</name>
   <url>http://maven.apache.org</url>
-  
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+
   <dependencies>
+
 	  <dependency>
 		  <groupId>com.authstr</groupId>
 		  <artifactId>ff-pub-model</artifactId>
@@ -32,26 +30,6 @@
 		  <artifactId>ff-pub-auth</artifactId>
 		  <version>1.0</version>
 	  </dependency>
-
-
-
-	  <dependency>
-		  <groupId>commons-codec</groupId>
-		  <artifactId>commons-codec</artifactId>
-	  </dependency>
-
-	  <dependency>
-		  <groupId>com.alibaba</groupId>
-		  <artifactId>druid</artifactId>
-		  <version>1.1.10</version>
-	  </dependency>
-
-	  <dependency>
-		  <groupId>com.alibaba</groupId>
-		  <artifactId>fastjson</artifactId>
-		  <version>1.2.49</version>
-	  </dependency>
-
 
   </dependencies>
 </project>

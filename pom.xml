@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
 	<parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -16,6 +15,7 @@
   <name>factorioforum</name>
   <url>http://maven.apache.org</url>
 
+    <!-- 定义一些变量,在其他位置可以通过${名称}的方式使用 -->
   <properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -23,12 +23,15 @@
 		<org.springframework.boot.version>2.0.3.RELEASE</org.springframework.boot.version>
   </properties>
 
+
   <dependencies>
         
-    </dependencies>
+  </dependencies>
   
    <build>
+        <!-- 用于指定使用的插件 -->
         <plugins>
+            <!-- 提供对spring boot的编译支持 -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -43,6 +46,8 @@
 				<fork>true</fork>
 			</configuration> -->
             </plugin>
+
+            <!-- 对maven编译进行设置 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -53,6 +58,7 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+
             <!-- 打包时附加源码  -->
             <plugin>
 				<artifactId>maven-source-plugin</artifactId>

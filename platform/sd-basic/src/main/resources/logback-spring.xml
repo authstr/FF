@@ -2,16 +2,16 @@
 <!-- scan:配置文件改变时,是否重新加载,默认true; scanPeriod:检测配置文件改变的间隔; debug:是否打印出logback内部日志信息,默认false  -->
 <Configuration scan="true" scanPeriod="60 seconds" debug="false" >
 
-
-
 	<!-- 设置上下文名称,默认名称"default" , 一般用于区分不同应用程序的日志,该设置不可动态修改,可以通过%contextName打印-->
 	<!--<contextName>default</contextName>-->
 
-
 	<!-- 设置变量,通过定义的值会被插入到logger上下文中。定义变量后，可以使“${}”来使用变量-->
-	<property name="logback.logdir" value="G:\springboot_log"/>
-	<property name="logback.appname" value="sd-basic"/>
+	<!--<property name="logback.logdir" value="G:\springboot_log"/>
+	<property name="logback.appname" value="sd-basic"/>-->
 
+	<!-- 从配置文件中获取变量,name:新的变量名; source:变量值的来源 -->
+	<springProperty scope="context" name="logback.appname" source="server.servlet.context-path"/>
+	<springProperty scope="context" name="logback.logdir" source="logback.logdir"/>
 
 	<!-- 用来格式化日志输出节点，class用来指定哪种输出策略-->
 	<!--输出到控制台 ConsoleAppender-->
@@ -20,15 +20,13 @@
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<pattern>
 				<!-- 定义输出格式 -->
-				<!--
-				%d{HH: mm:ss.SSS}——日志输出时间
+				<!--%d{HH: mm:ss.SSS}——日志输出时间
 				%thread——输出日志的进程名字，这在Web应用以及异步任务处理中很有用
 				%-5level——日志级别，并且使用5个字符靠左对齐
 				%logger{36}——日志输出者的名字
 				%msg——日志消息
-				%n——平台的换行符
-				-->
-				<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} ${logback.appname} [%thread] [%-5level] [%logger{36}]  > >  %msg %n</pattern>
+				%n——平台的换行符-->
+				<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} ${logback.appname} [%thread] [%-5level] [%logger{36}] > > >  %msg %n</pattern>
 			</pattern>
 		</layout>
 
@@ -55,11 +53,11 @@
             如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天
             的日志改名为今天的日期。即，<File> 的日志都是当天的。
         -->
-		<File>${logback.logdir}/${logback.appname}.info.log</File>
+		<File>${logback.logdir}/${logback.appname}-info.log</File>
 		<!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间-->
-			<FileNamePattern>${logback.logdir}/${logback.appname}.info.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<FileNamePattern>${logback.logdir}/${logback.appname}-info-%d{yyyy-MM-dd}.log</FileNamePattern>
 			<!--只保留最近90天的日志-->
 			<maxHistory>90</maxHistory>
 			<!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
@@ -68,7 +66,7 @@
 		<!--日志输出编码格式化-->
 		<encoder>
 			<charset>UTF-8</charset>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} ${logback.appname} [%thread] [%-5level] [%logger{36}]  > >  %msg %n</pattern>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} ${logback.appname} [%thread] [%-5level] [%logger{36}] > > > %msg %n</pattern>
 		</encoder>
 		<!--日志文件最大的大小-->
 		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
@@ -82,15 +80,11 @@
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>Error</level>
 		</filter>
-		<!--日志名称，如果没有File 属性，那么只会使用FileNamePattern的文件路径规则
-            如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天
-            的日志改名为今天的日期。即，<File> 的日志都是当天的。
-        -->
-		<File>${logback.logdir}/${logback.appname}.error.log</File>
+		<File>${logback.logdir}/${logback.appname}-error.log</File>
 		<!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间-->
-			<FileNamePattern>${logback.logdir}/error.${logback.appname}.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<FileNamePattern>${logback.logdir}/${logback.appname}-error-%d{yyyy-MM-dd}.log</FileNamePattern>
 			<!--只保留最近90天的日志-->
 			<maxHistory>90</maxHistory>
 			<!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
@@ -99,7 +93,7 @@
 		<!--日志输出编码格式化-->
 		<encoder>
 			<charset>UTF-8</charset>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} ${logback.appname} [%thread] [%-5level] [%logger{36}]  > >  %msg %n</pattern>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} ${logback.appname} [%thread] [%-5level] [%logger{36}] > > > %msg %n</pattern>
 		</encoder>
 		<!--日志文件最大的大小-->
 		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
@@ -131,5 +125,13 @@
 		<appender-ref ref="fileInfoLog" />
 		<appender-ref ref="fileErrorLog" />
 	</root>
+
+
+	<!-- 根据spring.profiles.active的值执行相对应的设置,用于进行多环境的日志配置 -->
+	<!--<springProfile name="test,dev">-->
+		<!--<logger name="com.example.demo.controller" level="DEBUG" additivity="false">-->
+			<!--<appender-ref ref="consoleLog"/>-->
+		<!--</logger>-->
+	<!--</springProfile>-->
 
 </Configuration>

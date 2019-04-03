@@ -9,40 +9,17 @@
   <groupId>com.authstr</groupId>
   <artifactId>factorioforum-public</artifactId>
   <version>1.0</version>
+    <packaging>pom</packaging>
   <name>public</name>
   <url>http://maven.apache.org</url>
-  <properties>
-   		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-		<org.springframework.boot.version>2.0.4.RELEASE</org.springframework.boot.version>
-  </properties>
+
   <dependencies>
-  
   </dependencies>
-  
-  
-  <packaging>pom</packaging>
+
   <modules>
     <module>ff-pub-model</module>
     <module>ff-pub-utils</module>
    <module>ff-pub-auth</module>
   </modules>
-  
-  <build>
-	<plugins>
-		<plugin>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-maven-plugin</artifactId>
-			<configuration>
-				<includeSystemScope>true</includeSystemScope>
-				<fork>true</fork>
-			</configuration>
-		</plugin>
-		
-	</plugins>
-</build>  
-  		
 
-  
 </project>

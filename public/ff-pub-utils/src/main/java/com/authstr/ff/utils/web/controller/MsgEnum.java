@@ -2,7 +2,7 @@ package com.authstr.ff.utils.web.controller;
 
 public enum MsgEnum implements MsgEnumInterface {
 
-    SUCCESS("1","请求成功!"),
+    SUCCESS("0","请求成功!"),
     UNKNOWN_ERROR("-1","未知异常!"),
     PARA_ERROR("-100","参数错误!");
 

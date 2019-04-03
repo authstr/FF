@@ -5,118 +5,48 @@
 	 <groupId>com.authstr</groupId>
 	  <artifactId>factorioforum</artifactId>
 	  <version>1.0</version>
+
   </parent>
   <groupId>com.authstr</groupId>
   <artifactId>factorioforum-platform</artifactId>
   <version>1.0</version>
+  <packaging>pom</packaging>
   <name>platform</name>
   <url>http://maven.apache.org</url>
-  <properties>
-   		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-		<!--<org.springframework.boot.version>2.0.4.RELEASE</org.springframework.boot.version>-->
-		<!-- <org.apache.logging.log4j.version>2.9.1</org.apache.logging.log4j.version>
-		<org.springframework.boot.version>2.0.4.RELEASE</org.springframework.boot.version>
-		<org.springframework-version>4.3.12.RELEASE</org.springframework-version>
-		<org.hibernate-version>5.2.11.Final</org.hibernate-version> -->
-  </properties>
+
   <dependencies>
-  	
-  	 	<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter</artifactId>
-		    <version>${org.springframework.boot.version}</version>
-		    <!--<exclusions>
-		        <exclusion>
-		            <groupId>org.springframework.boot</groupId>
-		            <artifactId>spring-boot-starter-logging</artifactId>
-		        </exclusion>
-		    </exclusions>-->
-		</dependency>
-  	
-  		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-		</dependency>
-		
-  		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        
+
+	   <!-- tomcat包 -->
         <dependency>
         	<groupId>org.springframework.boot</groupId>
         	<artifactId>spring-boot-starter-tomcat</artifactId>
         	<scope>provided</scope>
         </dependency>
-        
+
+
+       <!-- 提供事务,jpa相关功能 -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		
-			<!-- 前端支持,html解析  -->
+	    <!-- 提供html解析传值等功能  -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId> 
 		</dependency>
-		
+
+        <!-- mysql连接驱动 -->
   		<dependency>
 		   <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-entitymanager</artifactId>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-entitymanager</artifactId>
-		</dependency>
-		
-		<dependency>
-		    <groupId>commons-beanutils</groupId>
-		    <artifactId>commons-beanutils</artifactId>
-		    <version>1.9.3</version>
-		</dependency>
-		
-		 <dependency>
-		    <groupId>log4j</groupId>
-		    <artifactId>log4j</artifactId>
-		    <version>1.2.17</version>
-		</dependency>
-	
-	
-		
+
   </dependencies>
-  
-  <packaging>pom</packaging>
+
   <modules>
     <module>sd-login</module>
     <module>sd-basic</module>
    <!--  <module>ff-pub-auth</module> -->
   </modules>
-  
-
-<build>
-	<plugins>
-		<plugin>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-maven-plugin</artifactId>
-			<configuration>
-				<includeSystemScope>true</includeSystemScope>
-				<fork>true</fork>
-			</configuration>
-		</plugin>
-	</plugins>
-</build>  
-
 </project>

@@ -3,7 +3,9 @@ package com.authstr.ff.auth.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.authstr.ff.utils.login.LoginThreadLocal;
 import com.authstr.ff.utils.login.LoginUtil;
@@ -16,7 +18,7 @@ import com.authstr.ff.utils.base.SpringUtils;
  * @author authstr
  */
 public class AuthInterceptor extends HandlerInterceptorAdapter {
-	private Logger log = Logger.getLogger(AuthInterceptor.class);
+	protected Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	/**
 	 * 获取配置信息的字段类对象

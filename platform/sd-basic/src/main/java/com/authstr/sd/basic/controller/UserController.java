@@ -24,9 +24,6 @@ public class UserController extends AbstractController {
 		@Autowired
 		UserService userService;
 
-		@Value("${logging.config}")
-		String a;
-
 		@RequestMapping("a")
 		public String  ae(){
 			System.out.println("进入了(01)............................");
@@ -40,12 +37,12 @@ public class UserController extends AbstractController {
 		@RequestMapping("query")
 		 public Map query(QueryCommonPage query, HttpServletRequest request) {
 			Map m = super.success();
-			System.out.println("ddd");
-			this.log.info("11111111111111111");
-			this.log.error("2222");
-			this.log.debug("333");
-			this.log.trace("444");
-			System.out.println(a);
+//			TRACE < DEBUG < INFO < WARN < ERROR < FATAL
+			this.log.info("info");
+			this.log.warn("warn");
+			this.log.error("error");
+			this.log.debug("debug");
+			this.log.trace("trace");
 			RequestPara para=new RequestPara(request);
 			m.put("page", userService.query(query,para));
 			return m;

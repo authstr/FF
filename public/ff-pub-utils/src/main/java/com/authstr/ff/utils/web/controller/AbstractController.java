@@ -13,17 +13,15 @@ import com.authstr.ff.utils.base.StringUtils;
 import com.authstr.ff.utils.exception.ErrorException;
 import com.authstr.ff.utils.exception.MsgException;
 
-import org.apache.log4j.LogManager;
 
 /**
  * 控制层的父类,主要对控制层的异常进行捕获,通过接口返回或者进行其他处理
  */
 @Component
 public class AbstractController {
+
 	protected Logger log = LoggerFactory.getLogger(this.getClass());
 
-
-//	protected Logger log = LogManager.getLogger(this.getClass());
 	@ExceptionHandler(value={Exception.class})
     @ResponseBody
     public Map exceptionHandler(Exception ex) {
@@ -70,7 +68,8 @@ public class AbstractController {
 
 	public Map success() {
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put(MsgEnum.SUCCESS.getCode(),MsgEnum.SUCCESS.getMessage());
+		map.put(ControllerConstant.CODE,MsgEnum.SUCCESS.getCode());
+		map.put(ControllerConstant.MSG,MsgEnum.SUCCESS.getMessage());
 		return map;
 	}
 }
