@@ -13,11 +13,7 @@ public interface InterfaceDao {
 
 	Serializable save(Object entity);
 
-	<T> T queryOneByEntity(T entity, String[] fields);
 
-	<T> List<T> queryByEntity(T entity);
-
-	<T> List<T> queryByEntity(T entity, String[] fields);
 
 	<T> List<T> getBySQL(String sql, String[] fields, Object[] values, Class<T> returnType);
 
@@ -29,13 +25,13 @@ public interface InterfaceDao {
 
 	public <T extends AbstractModel> boolean isUnique(T model, String...field);
 
-	public <T> T get(Class<T> clazz, Serializable id, String[] fields);
+	<T> T get(Class<T> clazz, Serializable id, String[] fields);
 
-	 public <T> T get(Class<T> clazz, Serializable id);
+	<T> T get(Class<T> clazz, Serializable id);
 
-	 public List<Serializable> saveList(List entityList);
+	List<Serializable> saveList(List entityList);
 
-	 public <T>  T queryOneByEntity(T entity, String fields);
+
 	 
 	 public int remove(Class clazz, Serializable id);
 

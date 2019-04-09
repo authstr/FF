@@ -45,5 +45,9 @@ public class CollectionUtils {
 				);
 	}
 
+	public static <T> T listGetOneData(List<T> list){
+		return list==null||list.isEmpty()?null :list.get(0);
+	}
+
 	
 }

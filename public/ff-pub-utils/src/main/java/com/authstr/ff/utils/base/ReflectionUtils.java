@@ -13,8 +13,7 @@ import org.apache.commons.beanutils.PropertyUtils;
  *
  */
 public class ReflectionUtils {
-	
-	
+
 	/**
 	 * 获取一个实体对象所映射的表名,该对象需要使用了@Table注解
 	 * @param obj 要获取的对象
@@ -25,7 +24,13 @@ public class ReflectionUtils {
 	public static String getEntityTableName(Object obj){
 		return getEntityTableName(obj.getClass());
 	}
-	
+	/**
+	 * 获取一个实体对象所映射的表名,该对象需要使用了@Table注解
+	 * @param clazz 要获取的类型
+	 * @return 返回映射的表名,如果无法获取,返回null
+	 * @time 2018年9月17日14:58:52
+	 * @author authstr
+	 */
 	public static String getEntityTableName(Class clazz){
 		try {
 			return ((Table)clazz.getAnnotation(Table.class)).name();
@@ -71,7 +76,9 @@ public class ReflectionUtils {
 	public static boolean isMethodExist(Class clazz,String methodName){
 		  Method[] method = clazz.getDeclaredMethods();//获取所有方法
 		  for(int i=0;i<method.length;i++){
-			  if(methodName.equals(method[i].getName()))return true;//名字一样,返回true;
+			  if(methodName.equals(method[i].getName())){
+			  	  return true;//名字一样,返回true;
+			  }
           }
 		  return false;
 	}	
@@ -85,9 +92,13 @@ public class ReflectionUtils {
 	 * @author authstr
 	 */
 	public static boolean isFieldExist(Class clazz,String fieldName){
-		Field[] field= clazz.getDeclaredFields();//获取所有属性
+		//获取所有属性
+		Field[] field= clazz.getDeclaredFields();
 		for(int i=0;i<field.length;i++){
-			  if(fieldName.equals(field[i].getName()))return true;//名字一样,返回true;
+			//名字一样,返回true;
+			if(fieldName.equals(field[i].getName())){
+				return true;
+			}
         }
 		return false;
 	}
@@ -121,8 +132,9 @@ public class ReflectionUtils {
 		fieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1); // 将属性的首字符大写，方便构造get，set方法
 		Method m=null;
         try {
-        	 m = obj.getClass().getMethod("get" + fieldName);//获取get方法
-        	 return m.invoke(obj);//执行
+			//获取get方法
+			m = obj.getClass().getMethod("get" + fieldName);
+			return m.invoke(obj);//执行
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -139,10 +151,12 @@ public class ReflectionUtils {
 	 * @author authstr
 	 */
 	public static <T> void executeSetMethod(Object obj,String fieldName,T value) throws Exception {
-		fieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1); // 将属性的首字符大写，方便构造get，set方法
+		//将属性的首字符大写，方便构造get，set方法
+		fieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 		Method m=null;
     	 try {
-			m = obj.getClass().getMethod("set" + fieldName,value.getClass());//获取get方法
+    	 	//获取set方法
+			m = obj.getClass().getMethod("set" + fieldName,value.getClass());
 		    m.invoke(obj,value);//执行
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();

@@ -595,156 +595,90 @@ public class AbstractDao implements InterfaceDao{
 
 
 
+    /**
+     * 删除多个entity
+     * @param clazz 要删除的实体类
+     * @param ids 被删除的数据id数组
+     * @return
+     * @time 2018年11月13日 上午11:46:34
+     * @author authstr
+     */
+    @Override
+    public int removeIds(Class clazz, Serializable[] ids) {
+        //从实体类获取数据表名称
+        String tableName=ReflectionUtils.getEntityTableName(clazz);
+        //如果没有get到值,抛出一个内部异常
+        Assert.isTrue(StringUtils.hasText(tableName),
+                "该实体类["+clazz.getSimpleName()+"]没有设置表映射!",true);
+        return removeIds(tableName,ids);
+    }
+    /**
+     * 删除多个entity
+     * @param tableName 要删除的数据表名称
+     * @param ids 被删除的数据id数组
+     * @return
+     * @time 2018年11月13日 上午11:46:34
+     * @author authstr
+     */
+    public int removeIds(String tableName, Serializable[] ids) {
+        StringBuffer sqlstring = new StringBuffer();
+        sqlstring.append(" delete from " +tableName);
+        sqlstring.append(" where id in (:ids) ");
+        Map<String,Object> para=new HashMap<String,Object>();
+        para.put("ids", ids);
+        return this.executeSQl(sqlstring.toString(), para);
+    }
+
 
 	/**
-	 * 通过id删除一个entiy
-	 * 删除一个entity对象
+	 * 通过一个id删除一个entiy
 	 * @time 2018年11月13日14:04:43
 	 * @author authstr
 	 */
 	@Override
 	public int remove(Class clazz, Serializable id) {
-		StringBuffer sqlstring = new StringBuffer();
-		String tableName=ReflectionUtils.getEntityTableName(clazz);
-		if(tableName==null) tableName=clazz.getClass().getName();
-		sqlstring.append(" delete from " +tableName);
-		sqlstring.append("where id = :id ");
-		Map<String,Object> para=new HashMap<String,Object>();
-		para.put("id", id);
-		return this.executeSQl(sqlstring.toString(), para);
-	}
-
-
-
-	/**
-	 * 删除多个entity
-	 * @param clazz
-	 * @param ids
-	 * @return
-	 * @time 2018年11月13日 上午11:46:34
-	 * @author authstr
-	 */
-	@Override
-	public int removeIds(Class clazz, Serializable[] ids) {
-		StringBuffer sqlstring = new StringBuffer();
-		String tableName=ReflectionUtils.getEntityTableName(clazz);
-		if(tableName==null) tableName=clazz.getClass().getName();
-		sqlstring.append(" delete from " +tableName);
-		sqlstring.append(" where id in(:ids) ");
-		Map<String,Object> para=new HashMap<String,Object>();
-		para.put("ids", ids);
-		return this.executeSQl(sqlstring.toString(), para);
+	    return removeIds(clazz,new Serializable[]{id});
 	}
 
 
 
 
 
-	/**
-	 * 根据实体查询一条数据
-	 * @see #queryOneByEntity(Object, String[])
-	 * @param entity entity 要解析的实体类
-	 * @param fields 要作为where限制条件的属性名称,属性值自动从实体中获取
-	 * @return 查询结果
-	 * @time 2018年9月17日22:37:52
-	 * @author authstr
-	 */
-	@Override
-	public <T> T queryOneByEntity(T entity,String fields){
-		return queryOneByEntity(entity,new String[]{fields});
-	}
+    /**
+     * 根据相关参数构建简单的sql语句进行查询(执行方法)
+     * @param tableName 要查询的表名
+     * @param fields	where限制的字段名称
+     * @param values where限制的字段值
+     * @param sqlResult 查询要返回的信息
+     * @return list集合
+     * @time 2018年9月17日18:00:44
+     * @author authstr
+     */
+    public  List queryByEntity(String tableName,String[] fields,Object[] values,String sqlResult,Class returnType){
+        StringBuffer sql =new StringBuffer();
+        sql.append("select  "+sqlResult+"  from "+tableName+" a  where 1=1");
+        for(int i=0;i<fields.length;i++){
+            sql.append(" and "+fields[i]+" =  :"+fields[i]);
+        }
+        return getBySQL(sql.toString(),fields,values,returnType);
+    }
 
-	/**
-	 * 根据实体查询一条数据
-	 * @see #queryByEntity(Object, String[])
-	 * @see #queryByEntity(Object)
-	 * @param entity 要解析的实体类
-	 * @param fields 要作为where限制条件的属性名称,属性值自动从实体中获取
-	 * @return 查询结果
-	 * @time 2018年9月17日22:31:25
-	 * @author authstr
-	 */
-	@Override
-	public <T> T queryOneByEntity(T entity,String[] fields){
-		List<T> res=queryByEntity(entity,fields);
-		if(res==null||res.size()==0)return null;
-		return res.get(0);
-	}
-
-	/**
-	 * 根据一个实体类构建简单的sql查询语句;     表名为该实体类映射的表,where限制字段为实体里值非空的属性,where限制的值为实体该属性的值,查询返回为"*";
-	 * 注意! 如果实体内有short,char,boolean类型的属性,会被加到限制条件中
-	 * @param entity 要解析的实体类
-	 * @return 查询结果
-	 * @time 2018年9月17日18:09:25
-	 * @author authstr
-	 */
-	@Override
-	public <T> List<T> queryByEntity(T entity){
-		Map<String,Object> pv=ReflectionUtils.getFieldAndValue(entity);//获取实体类中已经存在的属性值
-		return queryByEntity(entity,pv);
-	}
-
-	/**
-	 *  根据一个实体类和一些属性名称构建简单的sql查询语句;
-	 * @param entity 要解析的实体类
-	 * @param fields 要作为where限制条件的属性名称,属性值自动从实体中获取
-	 * @return 查询结果list
-	 * @time 2018年9月17日20:37:01
-	 * @author authstr
-	 */
-	@Override
-	public <T> List<T> queryByEntity(T entity,String[] fields){
-		Map<String,Object> pv =new HashMap<String, Object>();
-		for(int i=0;i<fields.length;i++){//遍历,从实体中取出对应属性的值
-			Object val=ReflectionUtils.executeGetMethod(entity, fields[i]);//执行对应属性的get方法
-			Assert.isTrue(val!=null,
-					"指定的属性["+fields[i]+"],未能在["+entity.getClass().getName()+"]类型中get到值!",true);//如果没有get到值,抛出一个内部异常
-			pv.put(fields[i], val);//将值保存
-		}
-		return queryByEntity(entity,pv);
-	}
-
-	public <T> List<T> queryByEntity(T entity,Map<String,Object> pv){
-		String[] fields=new String[pv.size()];
-		Object[] values=new Object[pv.size()];
-		int i=0;
-		for (Entry<String, Object> entry : pv.entrySet()) {//遍历
-			fields[i]= entry.getKey();
-			values[i]= entry.getValue();
-		}
-		return queryByEntity(entity,fields,values);
-	}
-
-	public <T> List<T> queryByEntity(T entity,String[] fields,Object[] values){
-		String tableName=ReflectionUtils.getEntityTableName(entity);//获取实体对应的表名
-		Assert.isTrue(StringUtils.hasText(tableName),
-				"该实体类["+entity.getClass().getSimpleName()+"]没有设置表映射!",true);//没获取到表名,抛出一个内部异常
-		return queryByEntity(tableName,fields,values,"*",entity.getClass());
-	}
-
-	/**
-	 * 根据相关参数构建简单的sql语句进行查询(参数重写)
-	 * @param tableName 要查询的表名
-	 * @param fields	where限制的字段名称
-	 * @param values where限制的字段值
-	 * @param sqlResult 查询要返回的信息
-	 * @return list集合
-	 * @time 2018年9月17日18:00:44
-	 * @author authstr
-	 */
-	public  List queryByEntity(String tableName,String[] fields,Object[] values,String sqlResult,Class returnType){
-		StringBuffer sql =new StringBuffer();
-		sql.append("select  "+sqlResult+"  from "+tableName+" a  where 1=1");
-		for(int i=0;i<fields.length;i++){
-			sql.append(" and "+fields[i]+" =  :"+fields[i]);
-		}
-		return getBySQL(sql.toString(),fields,values,returnType);
-	}
-
-
-
-
+    /**
+     * 根据实体和字段参数构建简单的sql语句进行查询(执行方法)
+     * @param entity 要查询的实体
+     * @param fields	where限制的字段名称
+     * @param values where限制的字段值
+     * @return list集合
+     * @time 2018年9月17日18:02:49
+     * @author authstr
+     */
+    public <T> List<T> queryByEntity(T entity,String[] fields,Object[] values){
+        String tableName=ReflectionUtils.getEntityTableName(entity);//获取实体对应的表名
+        //没获取到表名,抛出一个内部异常
+        Assert.isTrue(StringUtils.hasText(tableName),
+                "该实体类["+entity.getClass().getSimpleName()+"]没有设置表映射!",true);
+        return queryByEntity(tableName,fields,values,"*",entity.getClass());
+    }
 
 
 
@@ -760,7 +694,9 @@ public class AbstractDao implements InterfaceDao{
 	@Override
 	public <T extends AbstractModel> boolean isUnique(T model,String...field){
 		String tableName=ReflectionUtils.getEntityTableName(model);
-		if(tableName==null) tableName=model.getClass().getName();
+        //没获取到表名,抛出一个内部异常
+        Assert.isTrue(StringUtils.hasText(tableName),
+                "该实体类["+model.getClass().getSimpleName()+"]没有设置表映射!",true);
 		return isUnique(model,tableName,field);
 	}
 	
@@ -781,21 +717,26 @@ public class AbstractDao implements InterfaceDao{
 		for(int i=0;i<field.length;i++){//遍历字段,拼接查询条件
 			String fieldName=field[i].trim();
 			if(StringUtils.hasText(fieldName)){
-				  Object propertyValue = ReflectionUtils.getProperty(model,fieldName);//获取属性值
+                 //获取属性值
+				  Object propertyValue = ReflectionUtils.getProperty(model,fieldName);
 				  sqlstring.append(" and a." + fieldName + "=?");
-				  values.add(propertyValue);//记录属性值
+                  //记录属性值
+				  values.add(propertyValue);
 			}
         }
 		//判断是否存在id
 		if(model.getId()!=null){
-			 sqlstring.append(" and a.id <> ?");//id不等于当前id
-			 values.add(model.getId());//记录属性值
+            //id不等于当前id
+            sqlstring.append(" and a.id <> ?");
+            //记录属性值
+            values.add(model.getId());
 		}
 		//执行查询
 		List<Map>  list=getByValuesSql(sqlstring.toString(), values.toArray(), Map.class);
-		//if(list==null)return false;
 		Integer num= NumberUtils.toInteger(list.get(0).get("num"));
-		if(num!=null&&num==0)return true;
+		if(num!=null&&num==0){
+		    return true;
+        }
 		return false;
 	}
 	
@@ -823,8 +764,14 @@ public class AbstractDao implements InterfaceDao{
      */
     @Override
     public <T> T get(Class<T> clazz, Serializable id, String[] fields) {
-        if (id == null || StringUtils.notText(id.toString()))  return null;//非空验证
-        if (fields == null || fields.length <= 0)  return this.getSession().get(clazz, id);//查询一个对象
+        //非空验证
+        if (id == null || StringUtils.notText(id.toString())){
+            return null;
+        }
+        //查询一个对象
+        if (fields == null || fields.length <= 0){
+            return this.getSession().get(clazz, id);
+        }
         //拼接sql,查询指定字段
         StringBuffer sqlstring = new StringBuffer();
         sqlstring.append(" select  ");
@@ -832,7 +779,7 @@ public class AbstractDao implements InterfaceDao{
         sqlstring.append(" from " + clazz.getName());
         sqlstring.append(" where id=?");
         List<T> li= getByValuesSql(sqlstring.toString(),new Object[]{id},clazz);
-        return li==null||li.isEmpty()?null :li.get(0);
+        return CollectionUtils.listGetOneData(li);
     }
 	
 	
