@@ -18,8 +18,8 @@ public class ObjectUtils {
 	 * @author authstr
 	 */
 	public static boolean isExist(Object obj){
-		if (obj instanceof Collection)  return isCollectionExist((Collection)obj);//如果是集合
-		if(obj instanceof Map)				return isMapExist((Map)obj);//如果是Map
+		if (obj instanceof Collection)  return CollectionUtils.isCollectionExist((Collection)obj);//如果是集合
+		if(obj instanceof Map)				return CollectionUtils.isMapExist((Map)obj);//如果是Map
 		if(obj instanceof Object[])		return isArrayExist((Object[])obj);//如果是数组
 		return obj!=null;
 	}
@@ -35,26 +35,6 @@ public class ObjectUtils {
 		return obj!=null&&obj.length!=0;
 	}
 	
-	/**
-	 * 集合是否存在
-	 * @param coll 要判断的集合
-	 * @return	true 存在
-	 * @time 2018年9月17日10:41:32
-	 * @author authstr
-	 */
-	public static boolean isCollectionExist(Collection coll){
-		return coll!=null&&!coll.isEmpty();
-	}
-	
-	/**
-	 * Map是否存在
-	 * @param kv 要判断的Map
-	 * @return	true 存在
-	 * @time 2018年9月17日10:57:00
-	 * @author authstr
-	 */
-	public static boolean isMapExist(Map kv){
-		return kv!=null&&kv.size()!=0;
-	}
+
 	
 }

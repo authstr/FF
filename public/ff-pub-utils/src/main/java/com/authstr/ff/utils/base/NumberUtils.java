@@ -9,7 +9,7 @@ package com.authstr.ff.utils.base;
  * @version V1.0
  */
 
-public class Numberutils {
+public class NumberUtils {
 	   /**
 	 * 将一个对象转换为Integer(参数重写)
 	 * @param obj

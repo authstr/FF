@@ -19,7 +19,7 @@ public class LoginAndRegisterDaoImpl extends AbstractDao implements LoginAndRegi
 	@Override
 	public BaseUser getUser(String loginname) {
 		String sql = " SELECT b.id,b.username,b.`password`,CASE WHEN b.`status_id` IS NULL THEN 0 ELSE	b.`status_id` END status_id FROM base_user b WHERE b.username =? ";
-		List<BaseUser> u = super.getByPropertySql(sql, new Object[]{loginname}, BaseUser.class);
+		List<BaseUser> u = super.getByValuesSql(sql, new Object[]{loginname}, BaseUser.class);
 		if(!ObjectUtils.isExist(u))return null;
 		return u.get(0);
 	}

@@ -12,7 +12,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.authstr.ff.utils.page.Page;
+import com.authstr.ff.utils.page.ReturnPage;
 import com.authstr.ff.utils.page.QueryCommonPage;
 import com.authstr.ff.utils.web.sevice.AbstractService;
 import com.authstr.sd.basic.dao.inter.UserDao;
@@ -25,7 +25,7 @@ public class UserServiceImpl extends AbstractService implements UserService{
 	@Autowired
 	private UserDao userDao;
 	@Override
-	public Page query(QueryCommonPage query, RequestPara para){
+	public ReturnPage query(QueryCommonPage query, RequestPara para){
 		return userDao.query(query,para);
 	}
 

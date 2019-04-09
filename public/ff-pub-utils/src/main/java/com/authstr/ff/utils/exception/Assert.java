@@ -47,7 +47,6 @@ public class Assert {
 	    /**
 	     * 为false时抛出一个指定信息的消息异常或者错误异常
 	     * @param exp 为false抛出异常
-	     * @param message 该异常要显示的信息
 	     * @param message 异常的详细说明
 	     * @param data	该异常要附带的数据信息
 	     * @param isInside 该异常是否为错误异常
@@ -56,11 +55,12 @@ public class Assert {
 	     */
 	    public static void isTrue(boolean exp, String code, String message,Object data,boolean isInside){
 	    	 if (!exp) {
-		            if (!isInside) {
-		                throw new MsgException(code,message,data);
-		            }
-		            throw new ErrorException(code,message,data);
-		        }
+				if (!isInside) {
+					throw new MsgException(code,message,data);
+				}else{
+					throw new ErrorException(code,message,data);
+				}
+	    	 }
 	    }
 
 		/**

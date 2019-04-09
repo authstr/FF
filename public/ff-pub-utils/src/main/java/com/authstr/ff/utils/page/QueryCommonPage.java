@@ -4,33 +4,36 @@
 package com.authstr.ff.utils.page;
 
 
-public class QueryCommonPage {
-    private Integer rows;
+/**
+ * 发起查询请求时,进行分页需要的基本参数
+ * 2019年4月5日11:36:41
+ * authstr
+ */
+public class QueryCommonPage implements QueryPage {
+    //要查那页数据
     private Integer page;
-    private String keyword;
+    //每页有几条数据
+    private Integer rows;
+    //搜索值
+    private String search;
 
     public Integer getRows() {
-        return this.rows;
+        return rows;
     }
-
     public void setRows(Integer rows) {
         this.rows = rows;
     }
-
     public Integer getPage() {
-        return this.page;
+        return page;
     }
-
     public void setPage(Integer page) {
         this.page = page;
     }
-
-    public String getKeyword() {
-        return this.keyword;
+    public String getSearch() {
+        return search;
     }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setSearch(String search) {
+        this.search = search;
     }
 }
 

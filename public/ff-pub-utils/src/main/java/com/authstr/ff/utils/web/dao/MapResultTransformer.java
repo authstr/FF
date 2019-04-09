@@ -8,32 +8,25 @@ import org.hibernate.transform.AliasedTupleSubsetResultTransformer;
  * @author authstr
  *
  */
-public class AliasToEntityHashMapResultTransformer
-extends AliasedTupleSubsetResultTransformer {
-    public static final AliasToEntityHashMapResultTransformer INSTANCE = new AliasToEntityHashMapResultTransformer();
+public class MapResultTransformer extends AliasedTupleSubsetResultTransformer {
+    public static final MapResultTransformer MAP_INSTANCE = new MapResultTransformer();
 
-    private AliasToEntityHashMapResultTransformer() {
+    private Object readResolve() {
+        return MAP_INSTANCE;
     }
 
     public Object transformTuple(Object[] tuple, String[] aliases) {
         HashMap<String, Object> result = new HashMap<String, Object>(tuple.length);
-        int i = 0;
-        while (i < tuple.length) {
+        for(int i=0;i<aliases.length;i++){
             String alias = aliases[i];
             if (alias != null) {
                 result.put(alias, tuple[i]);
             }
-            ++i;
         }
         return result;
     }
-
     public boolean isTransformedValueATupleElement(String[] aliases, int tupleLength) {
         return false;
-    }
-
-    private Object readResolve() {
-        return INSTANCE;
     }
 }
 
