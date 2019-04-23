@@ -27,7 +27,9 @@ public class RequestPara {
     public RequestPara(HttpServletRequest request){
         setRequest(request);
     }
-    //public  RequestPara (){};
+    public  RequestPara (){
+        parameter=new HashMap<String,String>();
+    };
 
     public HttpServletRequest getRequest() {
         return request;

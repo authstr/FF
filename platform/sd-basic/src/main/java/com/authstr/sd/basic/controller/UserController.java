@@ -18,6 +18,8 @@ import com.authstr.sd.basic.service.inter.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.authstr.ff.utils.base.CollectionUtils.listGetOneData;
+
 @RestController
 @RequestMapping("user")
 public class UserController extends AbstractController {
@@ -51,7 +53,24 @@ public class UserController extends AbstractController {
 		@RequestMapping("save")
 		public Map save(BaseUser user) {
 			Map m = super.success();
-			m.put("data", userService.save(user));
+			m.put("msg", userService.save(user));
+			return m;
+		}
+
+		@RequestMapping("remove")
+		public Map remove(HttpServletRequest request) {
+			Map m = super.success();
+			RequestPara para=new RequestPara(request);
+			m.put("data", userService.removeIds(BaseUser.class,para.getArray("ids")));
+			return m;
+		}
+
+		@RequestMapping("getById")
+		public Map getById(String  id) {
+			Map m = super.success();
+			RequestPara para=new RequestPara();
+			para.add("id",id);
+			m.put("data", listGetOneData(userService.getByPara(para)));
 			return m;
 		}
 

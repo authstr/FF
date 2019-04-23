@@ -12,23 +12,26 @@ import com.authstr.ff.utils.exception.ErrorException;
 import com.authstr.ff.utils.model.AbstractModel;
 import com.authstr.ff.utils.web.dao.BasicDao;
 
+import javax.transaction.Transactional;
+
 @Component
 public class AbstractService implements InterfaceService{
 	  @Autowired
 	  @Qualifier(value="basicDaoImpl")
 	  public BasicDao basicDao;
 	  
-	  /**
-	 * 通过id从数据库获取指定的对象
-	 * @param clazz
-	 * @param id
-	 * @return
-	 * @time 2018年11月4日 下午4:01:10
-	 * @author authstr
-	 */
-	public <T> T get(Class<T> clazz, Serializable id){
+		/**
+		* 通过id从数据库获取指定的对象
+		* @param clazz
+		* @param id
+		* @return
+		* @time 2018年11月4日 下午4:01:10
+		* @author authstr
+		*/
+	  	@Override
+		public <T> T get(Class<T> clazz, Serializable id){
 		return basicDao.get(clazz, id);
-	  }
+		}
 	
 	
 	   /**
@@ -40,9 +43,11 @@ public class AbstractService implements InterfaceService{
 	 * @time 2018年11月4日 下午4:24:40
 	 * @author authstr
 	 */
+	   @Override
+
 	public <T> T get(Class<T> clazz, Serializable id, String[] fields) {
-		return basicDao.get(clazz, id,fields);
-	 }
+	   	return basicDao.get(clazz, id,fields);
+	   }
 	
 	/**
 	 * 判断一个对象里一些属性的值是否具有唯一性
@@ -52,6 +57,7 @@ public class AbstractService implements InterfaceService{
 	 * @time 2018年11月1日 上午11:23:56
 	 * @author authstr
 	 */
+	@Override
     public <T extends AbstractModel> boolean isUnique(T entity, String[] fields) {
         return this.basicDao.isUnique(entity, fields);
     }
@@ -63,6 +69,8 @@ public class AbstractService implements InterfaceService{
      * @time 2018年11月4日 下午4:27:26
      * @author authstr
      */
+    @Override
+	@Transactional
     public Serializable save(Object entity) {
         return this.basicDao.save(entity);
     }
@@ -74,41 +82,51 @@ public class AbstractService implements InterfaceService{
      * @time 2018年11月13日 上午11:14:34
      * @author authstr
      */
+    @Override
+	@Transactional
     public int saveList(List listEntity) {
         return basicDao.saveList(listEntity).size();
     }
-	
+
     /**
      * 将一个对象更新到数据库(覆盖)
      * @param entity
      * @time 2018年11月13日 上午11:07:58
      * @author authstr
      */
+    @Override
+	@Transactional
     public void coverUpdata(Object entity){
 		updata(entity,true);
     }
-    
+
     /**
      * 将一个对象更新到数据库
      * @param entity
      * @time 2018年11月13日 上午11:07:38
      * @author authstr
      */
+    @Override
+	@Transactional
     public void updata(Object entity){
     	updata(entity,false);
     }
-    
+
     /**
      * 更新model集合
      * @param listEntity
      * @time 2018年11月13日 上午11:22:18
      * @author authstr
      */
+    @Override
+	@Transactional
     public void updateList(List listEntity) {
         basicDao.updateList(listEntity);
     }
-    
-    public void updata(Object entity,boolean isCopy){
+
+    @Override
+	@Transactional
+    public void updata(Object entity, boolean isCopy){
     	if(isCopy){
     		  Object no = get(entity.getClass(), ((AbstractModel)entity).getId().toString());
     		  if(no==null)throw new ErrorException("该model没有id,无法更新");
@@ -118,14 +136,18 @@ public class AbstractService implements InterfaceService{
     		 basicDao.update(entity);
     	}
     }
-    
+
+    @Override
+	@Transactional
     public int remove(Class clazz, Serializable id) {
         return this.basicDao.remove(clazz, id);
     }
-    
+
+    @Override
+	@Transactional
     public int removeIds(Class clazz, Serializable[] ids) {
         return this.basicDao.removeIds(clazz, ids);
     }
-    
-	
+
+
 }

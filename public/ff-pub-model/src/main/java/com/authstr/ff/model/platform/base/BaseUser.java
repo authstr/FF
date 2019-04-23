@@ -4,6 +4,7 @@ package com.authstr.ff.model.platform.base;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.authstr.ff.utils.model.AbstractModel;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,9 +20,7 @@ public class BaseUser extends AbstractModel implements Serializable {
 	private String phone;		//手机号 
 	private String remark;		//备注 
 	private Integer status_id;		//状态 
-	private Integer creator_id;		//创建人id 
-	private Date gmt_create;		//创建时间 
-	private Date gmt_modified;		//更新时间 
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 //	@Column(name = "id", unique = true, nullable = false, length = 20)
@@ -77,7 +76,8 @@ public class BaseUser extends AbstractModel implements Serializable {
 	public void setPhone(String phone){
 		this.phone = phone;
 	}
-                 
+
+	@NotNull
 	@Column(name = "remark", length = 512)
 	public String getRemark(){
 		return remark;
@@ -96,36 +96,7 @@ public class BaseUser extends AbstractModel implements Serializable {
 		this.status_id = status_id;
 	}
                  
-	@Column(name = "creator_id", length = 32)
-	public Integer getCreator_id(){
-		return creator_id;
-	}
-                 
-	public void setCreator_id(Integer creator_id){
-		this.creator_id = creator_id;
-	}
-                 
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "gmt_create", length = 19)
-	public Date getGmt_create(){
-		return gmt_create;
-	}
-                 
-	public void setGmt_create(Date gmt_create){
-		this.gmt_create = gmt_create;
-	}
-                 
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "gmt_modified", length = 19)
-	public Date getGmt_modified(){
-		return gmt_modified;
-	}
-                 
-	public void setGmt_modified(Date gmt_modified){
-		this.gmt_modified = gmt_modified;
-	}
+
                  
                  
 }

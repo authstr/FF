@@ -18,7 +18,9 @@ import com.authstr.ff.utils.web.sevice.AbstractService;
 import com.authstr.sd.basic.dao.inter.UserDao;
 import com.authstr.sd.basic.service.inter.UserService;
 
-import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
+import java.util.List;
+import java.util.Map;
+
 
 @Service
 public class UserServiceImpl extends AbstractService implements UserService{
@@ -29,11 +31,17 @@ public class UserServiceImpl extends AbstractService implements UserService{
 		return userDao.query(query,para);
 	}
 
+	@Override
+	public List<Map> getByPara(RequestPara para){
+		return userDao.get(para);
+	}
+
 	@Transactional
 	@Override
 	public String save(BaseUser user){
 		Assert.isTrue(StringUtils.hasText(user.getUsername()),"用户名不能为空");
 		Assert.isTrue(StringUtils.hasText(user.getPassword()),"密码不能为空");
+		Assert.isTrue(super.isUnique(user,new String[]{"username"}),"该用户名已存在");
 		Integer id=(Integer) super.save(user);
 		//密码md5加密后,用数据自身id作为盐,再次加密
 		String md5Password= null;

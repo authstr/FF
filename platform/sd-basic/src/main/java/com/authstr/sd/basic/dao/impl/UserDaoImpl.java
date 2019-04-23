@@ -1,6 +1,7 @@
 package com.authstr.sd.basic.dao.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.authstr.ff.utils.http.RequestPara;
@@ -27,6 +28,20 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 			kv.put("k", "%"+query.getSearch()+"%");
 		}
 		return super.queryByParamAndValue(sql.toString(), kv, query);
+	}
+
+	@Override
+	public List<Map> get( RequestPara para){
+		StringBuffer sql = new StringBuffer();
+		Map kv = new HashMap();
+		sql.append("select  a.*");
+		sql.append(" FROM base_user a ");
+		sql.append(" where 1=1 ");
+		if(para.hasKeyText("id")){
+			sql.append(" and id=:id ");
+			kv.put("id", para.get("id"));
+		}
+		return super.getByMapSQL(sql.toString(),kv,Map.class);
 	}
 	
 	

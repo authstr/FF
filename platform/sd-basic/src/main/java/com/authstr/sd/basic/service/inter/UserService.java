@@ -6,6 +6,9 @@ import com.authstr.ff.utils.page.ReturnPage;
 import com.authstr.ff.utils.page.QueryCommonPage;
 import com.authstr.ff.utils.web.sevice.InterfaceService;
 
+import java.util.List;
+import java.util.Map;
+
 public interface UserService extends InterfaceService{
 
     /**
@@ -16,6 +19,8 @@ public interface UserService extends InterfaceService{
      * @author authstr
      */
     ReturnPage query(QueryCommonPage query, RequestPara para);
+
+    List<Map> getByPara(RequestPara para);
 
     String save(BaseUser user);
 }

@@ -11,25 +11,24 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "base_code")	//基本编码表
 public class BaseCode extends AbstractModel implements Serializable {
-	private Integer id;		//主键 
+	private Integer id;		//主键
 	private String name;		//编码名称 
 	private Integer code_index;		//编码序号 
-	private String code_value;		//编码值 
+	private String code_value;		//编码值
+	private String code_english;	//编码英文值
 	private Integer type;		//编码类型 
 	private String system_name;		//所属系统 
 	private Integer parent_code;		//上级编码
 	private String describe;		//编码描述 
-	private Integer status;		//状态 
-	private Integer creator_id;		//创建人id 
-	private Date gmt_create;		//创建时间 
-	private Date gmt_modified;		//更新时间 
+	private Integer status;		//状态
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 //	@Column(name = "id", unique = true, nullable = false, length = 20)
 	public Integer getId(){
 		return id;
 	}
-                 
 	public void setId(Integer id){
 		this.id = id;
 	}
@@ -105,37 +104,13 @@ public class BaseCode extends AbstractModel implements Serializable {
 	public void setStatus(Integer status){
 		this.status = status;
 	}
-                 
-	@Column(name = "creator_id", length = 32)
-	public Integer getCreator_id(){
-		return creator_id;
+
+	@Column(name = "code_english", length = 20)
+	public String getCode_english() {
+		return code_english;
 	}
-                 
-	public void setCreator_id(Integer creator_id){
-		this.creator_id = creator_id;
+
+	public void setCode_english(String code_english) {
+		this.code_english = code_english;
 	}
-                 
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "gmt_create", length = 19)
-	public Date getGmt_create(){
-		return gmt_create;
-	}
-                 
-	public void setGmt_create(Date gmt_create){
-		this.gmt_create = gmt_create;
-	}
-                 
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "gmt_modified", length = 19)
-	public Date getGmt_modified(){
-		return gmt_modified;
-	}
-                 
-	public void setGmt_modified(Date gmt_modified){
-		this.gmt_modified = gmt_modified;
-	}
-                 
-                 
 }

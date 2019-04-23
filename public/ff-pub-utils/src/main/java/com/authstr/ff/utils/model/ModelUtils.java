@@ -1,11 +1,8 @@
 package com.authstr.ff.utils.model;
 
 
-
 import com.authstr.ff.utils.base.StringUtils;
 import com.authstr.ff.utils.exception.Assert;
-
-
 
 public class ModelUtils {
 	 public static boolean isNew(AbstractModel model) {

@@ -49,5 +49,7 @@ public class CollectionUtils {
 		return list==null||list.isEmpty()?null :list.get(0);
 	}
 
+
+
 	
 }
