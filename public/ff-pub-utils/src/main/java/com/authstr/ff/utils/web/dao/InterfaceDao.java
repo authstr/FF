@@ -19,6 +19,8 @@ public interface InterfaceDao {
 
 	void update(Object entity);
 
+	void update(Object entity, Boolean isValidation);
+
 	int updateList(List entityList);
 
 	void flushSession();
@@ -28,6 +30,8 @@ public interface InterfaceDao {
 	<T> T get(Class<T> clazz, Serializable id, String[] fields);
 
 	<T> T get(Class<T> clazz, Serializable id);
+
+	Serializable save(Object entity, Boolean isValidation);
 
 	List<Serializable> saveList(List entityList);
 

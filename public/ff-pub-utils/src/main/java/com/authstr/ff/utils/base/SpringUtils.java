@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-
 import com.authstr.ff.utils.exception.Assert;
 
 @Component
@@ -27,10 +26,9 @@ public class SpringUtils implements ApplicationContextAware {
 
     public static <T> T getBean(Class<T> clazz, String beanId) throws ClassCastException {
         ApplicationContext context = SpringUtils.getContext();
-        Assert.isTrue(StringUtils.hasText(beanId), "beanId must not null!");
-        System.out.println(context);
+        Assert.isTrue(StringUtils.hasText(beanId), "beanId must not null!",true);
         boolean a=context.containsBean(beanId);
-        Assert.isTrue(context.containsBean(beanId), "beanId :[" + beanId + "] is not exist!");
+        Assert.isTrue(context.containsBean(beanId), "beanId :[" + beanId + "] is not exist!",true);
         Object bean = null;
         bean = context.getBean(beanId);
         return (T)bean;

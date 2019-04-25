@@ -1,8 +1,10 @@
 package com.authstr.ff.utils.web.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -24,7 +26,8 @@ public class AbstractController {
 
 	@ExceptionHandler(value={Exception.class})
     @ResponseBody
-    public Map exceptionHandler(Exception ex) {
+	//@JsonIgnoreProperties(value={"hibernateLazyInitializer"})
+	public Map exceptionHandler(Exception ex) {
         HashMap<String, Object> model = new HashMap<String, Object>();
 		//如果是消息型异常
         if (ex instanceof MsgException) {
@@ -46,7 +49,7 @@ public class AbstractController {
 
 			//获取异常详细数据,如果有,进行返回
             if(msg.getData()!=null){
-            	model.put(ControllerConstant.DATA, msg.getData());
+             	model.put(ControllerConstant.DATA, msg.getData());
             }
 
             

@@ -12,7 +12,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.authstr.ff.utils.base.*;
+import com.authstr.ff.utils.exception.ErrorException;
+import com.authstr.ff.utils.exception.MsgException;
 import com.authstr.ff.utils.page.QueryPage;
+import com.authstr.ff.utils.validated.HibernateValidatorUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
@@ -67,25 +70,35 @@ public class AbstractDao implements InterfaceDao{
         this.getSession().clear();
     }
 	 /**
-	  * 添加/保存一个entity
-	 * @param entity
+	  * 保存一个entity
+	 * @param entity 要保存的model
 	 * @return 主键值
 	 */
 	@Override
 	public Serializable save(Object entity) {
-	        //HibernateValidatorUtils.validate(entity);  model验证
-	        //this.modelOperatorFactory.saveMof(entity);
-		// Session s=this.getSession();
-		 //Transaction tx= s.beginTransaction();
-		 //Serializable a= s.save(entity);
-		// s.getTransaction().commit();	
+		return save(entity,true);
+	}
+
+	/**
+	 * 保存一个entity
+	 * @param entity 要保存的model
+	 * @param isValidation 是否验证model
+	 * @return 主键值
+	 */
+	@Override
+	public Serializable save(Object entity, Boolean isValidation) {
+		// model验证
+		if(isValidation){
+			HibernateValidatorUtils.validate(entity);
+		}
 		return this.getSession().save(entity);
 	}
+
 	 
 	/**
-	 * 添加/保存多个entity
-	 * @param entityList
-	 * @return 主键id的list
+	 * 保存多个entity
+	 * @param entityList 要保存的model集合
+	 * @return 主键id的集合
 	 */
 	@Override
 	public List<Serializable> saveList(List entityList){
@@ -101,25 +114,34 @@ public class AbstractDao implements InterfaceDao{
 	}
 	
 	 /**
-	  * 更新/修改一个entity
-	 * @param entity
+	  * 更新一个entity
+	 * @param entity 要更新的model
 	 * @time 2018年9月25日16:15:25
 	 * @author authstr
 	 */
 	@Override
 	public void update(Object entity) {
-	      this.getSession().update(entity);
-	   }
+		update(entity,true);
+	}
+
+	@Override
+	public void update(Object entity, Boolean isValidation) {
+		// model验证
+		if(isValidation){
+			HibernateValidatorUtils.validate(entity);
+		}
+		this.getSession().update(entity);
+	}
 
     /** 
-     * 更新/修改多个entity
+     * 更新多个entity
      * @param entityList
      * @return 修改的数量
      * @time 2018年9月25日16:16:01
      * @author authstr
      */
 	@Override
-    public int updateList(List entityList) {
+	public int updateList(List entityList) {
     	for(int i=0;i<entityList.size();i++){
 			update(entityList.get(i));
 			//每20次刷新一下session
@@ -739,6 +761,7 @@ public class AbstractDao implements InterfaceDao{
         }
 		return false;
 	}
+
 	
     /**
      * 通过id查询一个对象
