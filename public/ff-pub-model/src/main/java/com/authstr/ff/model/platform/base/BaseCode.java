@@ -10,30 +10,63 @@ import org.springframework.format.annotation.DateTimeFormat;
                
 @Entity
 @Table(name = "base_code")	//基本编码表
-public class BaseCode extends AbstractModel implements Serializable {
-	private Integer id;		//主键
-	private String name;		//编码名称 
-	private Integer code_index;		//编码序号 
-	private String code_value;		//编码值
-	private String code_english;	//编码英文值
-	private Integer type;		//编码类型 
-	private String system_name;		//所属系统 
-	private Integer parent_code;		//上级编码
-	private String describe;		//编码描述 
-	private Integer status;		//状态
+public class BaseCode extends BaseModel {
+//	//主键
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+////	@Column(name = "id", unique = true, nullable = false, length = 20)
+//	private Integer id;
 
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@Column(name = "id", unique = true, nullable = false, length = 20)
-	public Integer getId(){
-		return id;
-	}
-	public void setId(Integer id){
-		this.id = id;
-	}
+
+	//编码名称
+	@Column(nullable=true,unique= true,columnDefinition="VARCHAR(32) Comment '编码名称'")
+	private String name;
+
+	//编码序号
+	@Column(name = "code_index", length = 20)
+	private Integer code_index;
+
+	//编码值
+	@Column(name = "code_value", length = 64)
+	private String code_value;
+
+
+	//编码英文值
+	@Column(name = "code_english", length = 20)
+	private String code_english;
+
+
+	//编码类型
+	@Column(name = "type", length = 4)
+	private Integer type;
+
+	//所属系统
+	@Column(name = "system_name", length = 32)
+	private String system_name;
+
+	//上级编码
+	@Column(name = "parent_code", length = 20)
+	private Integer parent_code;
+
+	//编码描述
+	@Column(name = "describe_info", length = 128)
+	private String describe_info;
+
+	//状态
+	@Column(name = "status", length = 20)
+	private Integer status;
+
+
+
+//	public Integer getId(){
+//		return id;
+//	}
+//	public void setId(Integer id){
+//		this.id = id;
+//	}
                  
-	@Column(name = "name", length = 32)
+
 	public String getName(){
 		return name;
 	}
@@ -42,7 +75,7 @@ public class BaseCode extends AbstractModel implements Serializable {
 		this.name = name;
 	}
                  
-	@Column(name = "code_index", length = 20)
+
 	public Integer getCode_index(){
 		return code_index;
 	}
@@ -51,7 +84,7 @@ public class BaseCode extends AbstractModel implements Serializable {
 		this.code_index = code_index;
 	}
                  
-	@Column(name = "code_value", length = 64)
+
 	public String getCode_value(){
 		return code_value;
 	}
@@ -60,7 +93,7 @@ public class BaseCode extends AbstractModel implements Serializable {
 		this.code_value = code_value;
 	}
                  
-	@Column(name = "type", length = 4)
+
 	public Integer getType(){
 		return type;
 	}
@@ -69,7 +102,7 @@ public class BaseCode extends AbstractModel implements Serializable {
 		this.type = type;
 	}
                  
-	@Column(name = "system_name", length = 32)
+
 	public String getSystem_name(){
 		return system_name;
 	}
@@ -78,7 +111,7 @@ public class BaseCode extends AbstractModel implements Serializable {
 		this.system_name = system_name;
 	}
                  
-	@Column(name = "parent_code", length = 20)
+
 	public Integer getParent_code(){
 		return parent_code;
 	}
@@ -86,17 +119,9 @@ public class BaseCode extends AbstractModel implements Serializable {
 	public void setParent_code(Integer parent_code){
 		this.parent_code = parent_code;
 	}
+
                  
-	@Column(name = "describe", length = 128)
-	public String getDescribe(){
-		return describe;
-	}
-                 
-	public void setDescribe(String describe){
-		this.describe = describe;
-	}
-                 
-	@Column(name = "status", length = 20)
+
 	public Integer getStatus(){
 		return status;
 	}
@@ -105,12 +130,20 @@ public class BaseCode extends AbstractModel implements Serializable {
 		this.status = status;
 	}
 
-	@Column(name = "code_english", length = 20)
+
 	public String getCode_english() {
 		return code_english;
 	}
 
 	public void setCode_english(String code_english) {
 		this.code_english = code_english;
+	}
+
+	public String getDescribe_info() {
+		return describe_info;
+	}
+
+	public void setDescribe_info(String describe_info) {
+		this.describe_info = describe_info;
 	}
 }

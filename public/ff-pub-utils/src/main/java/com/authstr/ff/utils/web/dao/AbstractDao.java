@@ -12,8 +12,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.authstr.ff.utils.base.*;
-import com.authstr.ff.utils.exception.ErrorException;
-import com.authstr.ff.utils.exception.MsgException;
 import com.authstr.ff.utils.page.QueryPage;
 import com.authstr.ff.utils.validated.HibernateValidatorUtils;
 import org.apache.commons.beanutils.BeanUtils;
@@ -70,12 +68,12 @@ public class AbstractDao implements InterfaceDao{
         this.getSession().clear();
     }
 	 /**
-	  * 保存一个entity
+	  * 保存一个entity(参数跳转)
 	 * @param entity 要保存的model
 	 * @return 主键值
 	 */
 	@Override
-	public Serializable save(Object entity) {
+	public <T extends AbstractModel> Serializable save(T entity) {
 		return save(entity,true);
 	}
 
@@ -86,11 +84,13 @@ public class AbstractDao implements InterfaceDao{
 	 * @return 主键值
 	 */
 	@Override
-	public Serializable save(Object entity, Boolean isValidation) {
+	public <T extends AbstractModel> Serializable save(T entity, Boolean isValidation) {
 		// model验证
 		if(isValidation){
 			HibernateValidatorUtils.validate(entity);
 		}
+		//初始化model
+		entity.createModel();
 		return this.getSession().save(entity);
 	}
 
@@ -101,7 +101,7 @@ public class AbstractDao implements InterfaceDao{
 	 * @return 主键id的集合
 	 */
 	@Override
-	public List<Serializable> saveList(List entityList){
+	public List<Serializable> saveList(List<? extends AbstractModel> entityList){
 		List<Serializable> res=new ArrayList<Serializable>();
 		for(int i=0;i<entityList.size();i++){
 			res.add(this.save(entityList.get(i)));
@@ -114,22 +114,29 @@ public class AbstractDao implements InterfaceDao{
 	}
 	
 	 /**
-	  * 更新一个entity
+	  * 更新一个entity(参数跳转)
 	 * @param entity 要更新的model
 	 * @time 2018年9月25日16:15:25
 	 * @author authstr
 	 */
 	@Override
-	public void update(Object entity) {
+	public <T extends AbstractModel> void update(T entity) {
 		update(entity,true);
 	}
-
+	/**
+	 * 更新一个entity
+	 * @param entity 要更新的model
+	 * @param isValidation 是否验证model
+	 * @return 主键值
+	 */
 	@Override
-	public void update(Object entity, Boolean isValidation) {
+	public <T extends AbstractModel> void update(T entity, Boolean isValidation) {
 		// model验证
 		if(isValidation){
 			HibernateValidatorUtils.validate(entity);
 		}
+		//设置model的更新时间
+		entity.updata();
 		this.getSession().update(entity);
 	}
 
@@ -141,7 +148,7 @@ public class AbstractDao implements InterfaceDao{
      * @author authstr
      */
 	@Override
-	public int updateList(List entityList) {
+	public Integer updateList(List<? extends AbstractModel> entityList) {
     	for(int i=0;i<entityList.size();i++){
 			update(entityList.get(i));
 			//每20次刷新一下session
@@ -256,7 +263,7 @@ public class AbstractDao implements InterfaceDao{
 	 * @time 2018年11月13日 上午11:37:44
 	 * @author authstr
 	 */
-	public int executeSQl(String sql,Map<String,Object> kv){
+	public Integer executeSQl(String sql,Map<String,Object> kv){
 		NativeQuery query=getSession().createNativeQuery(sql);
 		setQueryParameters(query, kv);
 		return query.executeUpdate();
@@ -270,7 +277,7 @@ public class AbstractDao implements InterfaceDao{
 	 * @time 2018年11月13日 上午11:39:14
 	 * @author authstr
 	 */
-	public int executeSQl(String sql,Object[] value){
+	public Integer executeSQl(String sql,Object[] value){
 		NativeQuery query=getSession().createNativeQuery(sql);
 		setQueryParameters(query, value);
 		return query.executeUpdate();
@@ -279,7 +286,7 @@ public class AbstractDao implements InterfaceDao{
 
 
 	/**
-	 * 执行查询语句,获取返回值(方法委托)
+	 * 执行查询语句,获取返回值(参数跳转)
 	 * @param sql 查询sql语句
 	 * @param fields sql参数 属性项数组
 	 * @param values sql参数 属性值数组
@@ -318,7 +325,7 @@ public class AbstractDao implements InterfaceDao{
 
 
 	/**
-	 * 使用 属性+值 的参数方式,执行查询语句,获取返回值(方法委托)
+	 * 使用 属性+值 的参数方式,执行查询语句,获取返回值(参数跳转)
 	 * @param sql 查询sql语句
 	 * @param kv sql参数,键为属性项数组,值为 属性值数组
 	 * @param firstRows 查询起始行数
@@ -343,7 +350,7 @@ public class AbstractDao implements InterfaceDao{
 
 
 	/**
-	 * 使用 属性+值 的参数方式,执行查询语句,获取返回值(方法委托)
+	 * 使用 属性+值 的参数方式,执行查询语句,获取返回值(参数跳转)
 	 * @param sql 查询sql语句
 	 * @param kv sql参数,键为属性项数组,值为 属性值数组
 	 * @param returnType 结果集封装的类型
@@ -374,7 +381,7 @@ public class AbstractDao implements InterfaceDao{
 	}
 
 	/**
-	 * 使用 属性+值 的参数方式,执行查询语句,获取一页数据(方法委托)
+	 * 使用 属性+值 的参数方式,执行查询语句,获取一页数据(参数跳转)
 	 * @param sqlstring 查询sql语句
 	 * @param paramAndValue sql参数,键为属性项数组,值为 属性值数组
 	 * @param page 分页查询参数对象
@@ -388,7 +395,7 @@ public class AbstractDao implements InterfaceDao{
 	}
 
 	/**
-	 * 使用 属性+值 的参数方式,执行查询语句,获取一页数据(Map)(方法委托)
+	 * 使用 属性+值 的参数方式,执行查询语句,获取一页数据(Map)(参数跳转)
 	 * @param sqlstring 查询sql语句
 	 * @param paramAndValue sql参数,键为属性项数组,值为 属性值数组
 	 * @param page 分页查询参数对象
@@ -403,7 +410,7 @@ public class AbstractDao implements InterfaceDao{
 
 
 	/**
-	 * 使用 参数值 的参数方式,执行查询语句,获取返回值(方法委托)
+	 * 使用 参数值 的参数方式,执行查询语句,获取返回值(参数跳转)
 	 * @param sql 查询sql语句
 	 * @param values
 	 * @param firstRows 查询起始行数
@@ -420,7 +427,7 @@ public class AbstractDao implements InterfaceDao{
 	}
 
 	/**
-	 * 使用 参数值 的参数方式,执行查询语句,获取返回值(方法委托)
+	 * 使用 参数值 的参数方式,执行查询语句,获取返回值(参数跳转)
 	 * @param sql 查询sql语句
 	 * @param values
 	 * @param returnType 结果集封装的类型
@@ -452,7 +459,7 @@ public class AbstractDao implements InterfaceDao{
 	}
 
 	/**
-	 * 使用 参数值 的参数方式,执行查询语句,获取一页数据(方法委托)
+	 * 使用 参数值 的参数方式,执行查询语句,获取一页数据(参数跳转)
 	 * @param sqlstring  查询sql语句
 	 * @param values sql参数 属性值
 	 * @param page 分页对象
@@ -466,7 +473,7 @@ public class AbstractDao implements InterfaceDao{
 	}
 
 	/**
-	 * 使用 参数值 的参数方式,执行查询语句,获取一页数据(方法委托)
+	 * 使用 参数值 的参数方式,执行查询语句,获取一页数据(参数跳转)
 	 * @param sqlstring  查询sql语句
 	 * @param values sql参数 属性值
 	 * @param page 分页对象
@@ -626,7 +633,7 @@ public class AbstractDao implements InterfaceDao{
      * @author authstr
      */
     @Override
-    public int removeIds(Class clazz, Serializable[] ids) {
+    public Integer removeIds(Class clazz, Serializable[] ids) {
         //从实体类获取数据表名称
         String tableName=ReflectionUtils.getEntityTableName(clazz);
         //如果没有get到值,抛出一个内部异常
@@ -642,7 +649,7 @@ public class AbstractDao implements InterfaceDao{
      * @time 2018年11月13日 上午11:46:34
      * @author authstr
      */
-    public int removeIds(String tableName, Serializable[] ids) {
+    public Integer removeIds(String tableName, Serializable[] ids) {
         StringBuffer sqlstring = new StringBuffer();
         sqlstring.append(" delete from " +tableName);
         sqlstring.append(" where id in (:ids) ");
@@ -658,7 +665,7 @@ public class AbstractDao implements InterfaceDao{
 	 * @author authstr
 	 */
 	@Override
-	public int remove(Class clazz, Serializable id) {
+	public Integer remove(Class clazz, Serializable id) {
 	    return removeIds(clazz,new Serializable[]{id});
 	}
 
@@ -706,7 +713,7 @@ public class AbstractDao implements InterfaceDao{
 
 
 	/**
-	 * 判断一个对象里一些属性的值是否具有唯一性(参数重写)
+	 * 判断一个对象里一些属性的值是否具有唯一性(参数跳转)
 	 * @param model
 	 * @param field
 	 * @return
@@ -776,7 +783,8 @@ public class AbstractDao implements InterfaceDao{
         return this.get(clazz, id, null);
     }
 
-    /**
+
+	/**
      * 根据id查询一个对象的指定字段
      * @param clazz
      * @param id

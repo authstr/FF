@@ -71,7 +71,7 @@ public class AbstractService implements InterfaceService{
      */
     @Override
 	@Transactional
-    public Serializable save(Object entity) {
+    public <T extends AbstractModel> Serializable save(T entity) {
         return this.basicDao.save(entity);
     }
     
@@ -84,7 +84,7 @@ public class AbstractService implements InterfaceService{
      */
     @Override
 	@Transactional
-    public int saveList(List listEntity) {
+    public int saveList(List<? extends AbstractModel> listEntity) {
         return basicDao.saveList(listEntity).size();
     }
 
@@ -96,7 +96,7 @@ public class AbstractService implements InterfaceService{
      */
     @Override
 	@Transactional
-    public void coverUpdata(Object entity){
+    public <T extends AbstractModel> void coverUpdata(T entity){
 		updata(entity,true);
     }
 
@@ -108,7 +108,7 @@ public class AbstractService implements InterfaceService{
      */
     @Override
 	@Transactional
-    public void updata(Object entity){
+    public <T extends AbstractModel> void updata(T entity){
     	updata(entity,false);
     }
 
@@ -120,18 +120,18 @@ public class AbstractService implements InterfaceService{
      */
     @Override
 	@Transactional
-    public void updateList(List listEntity) {
+    public void updateList(List<? extends AbstractModel> listEntity) {
         basicDao.updateList(listEntity);
     }
 
     @Override
 	@Transactional
-    public void updata(Object entity, boolean isCopy){
+    public <T extends AbstractModel> void updata(T entity, boolean isCopy){
     	if(isCopy){
-    		  Object no = get(entity.getClass(), ((AbstractModel)entity).getId().toString());
+    		  Object no = get(entity.getClass(), (entity).getId().toString());
     		  if(no==null)throw new ErrorException("该model没有id,无法更新");
     		  BeanUtils.copyProperties(entity, no);
-    		  basicDao.update(no);
+    		  basicDao.update((AbstractModel)no);
     	}else{
     		 basicDao.update(entity);
     	}

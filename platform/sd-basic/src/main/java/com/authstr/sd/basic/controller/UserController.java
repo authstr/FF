@@ -2,7 +2,10 @@ package com.authstr.sd.basic.controller;
 
 import java.util.Map;
 
+import com.authstr.ff.model.platform.base.BaseCode;
 import com.authstr.ff.model.platform.base.BaseUser;
+import com.authstr.ff.model.platform.base.User;
+import com.authstr.ff.model.platform.base.UserExtend;
 import com.authstr.ff.utils.http.RequestPara;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +20,7 @@ import com.authstr.sd.basic.dao.impl.UserDaoImpl;
 import com.authstr.sd.basic.service.inter.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import static com.authstr.ff.utils.base.CollectionUtils.listGetOneData;
 
@@ -27,12 +31,40 @@ public class UserController extends AbstractController {
 		UserService userService;
 
 		@RequestMapping("a")
+		@Transactional
 		public String  ae(){
 			System.out.println("进入了(01)............................");
-			LoginInfo ee=LoginThreadLocal.get();
-			System.out.println(ee);
-			String aaa=ee.getUsername();
-			System.out.println(aaa);
+//			User a=new User();
+//			a.setUsername("aaaa3");
+//			a.setPassword("dasd");
+//			UserExtend ue=new UserExtend();
+//			ue.setInterest("eeeeeeee");
+			BaseCode bc=new BaseCode();
+			bc.setName("测试5");
+			bc.setCode_index(1);
+			bc.setCode_value("222");
+
+			BaseUser bu=new BaseUser();
+			//bu.setId(2);
+			bu=userService.get(BaseUser.class,2);
+			bu.setRemark("aaa2222");
+
+			//bc.setCreator_user(bu);
+			userService.save(bc);
+//			bu.setUsername("7777");
+//			bu.setPassword("46645");
+//			bu.setSex(bc);
+			//bc.setCreator_user(bu);
+			//userService.save(bu);
+//			ue.setUser(a);
+//			userService.save(ue);
+
+			//a.setUserExtend(ue);
+			//userService.save(a);
+
+
+			//UserExtend eee=userService.get(UserExtend.class,1);
+			//System.out.println(eee);
 			return "测试测试";
 		}
 		

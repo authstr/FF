@@ -2,6 +2,7 @@ package com.authstr.ff.utils.web.sevice;
 
 import com.authstr.ff.utils.model.AbstractModel;
 
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,17 +15,25 @@ public interface InterfaceService {
 
     <T extends AbstractModel> boolean isUnique(T entity, String[] fields);
 
-    Serializable save(Object entity);
 
-    int saveList(List listEntity);
+    @Transactional
+    <T extends AbstractModel> Serializable save(T entity);
 
-    void coverUpdata(Object entity);
+    @Transactional
+    int saveList(List<? extends AbstractModel> listEntity);
 
-    void updata(Object entity);
 
-    void updateList(List listEntity);
+    @Transactional
+    <T extends AbstractModel> void coverUpdata(T entity);
 
-    void updata(Object entity, boolean isCopy);
+    @Transactional
+    <T extends AbstractModel> void updata(T entity);
+
+    @Transactional
+    void updateList(List<? extends AbstractModel> listEntity);
+
+    @Transactional
+    <T extends AbstractModel> void updata(T entity, boolean isCopy);
 
     int remove(Class clazz, Serializable id);
 

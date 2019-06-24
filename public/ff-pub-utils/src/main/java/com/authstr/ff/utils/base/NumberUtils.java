@@ -11,7 +11,7 @@ package com.authstr.ff.utils.base;
 
 public class NumberUtils {
 	     /**
-		 * 将一个对象转换为Integer(参数重写)
+		 * 将一个对象转换为Integer(参数跳转)
 		 * @param obj
 		 * @return
 		 * @time 2018年11月1日 上午11:14:35

@@ -126,7 +126,7 @@ public class StringUtils {
 	
 	
 	/**
-	 * String数组合并成String(参数重写)
+	 * String数组合并成String(参数跳转)
 	 * @param array 数组
 	 * @return
 	 * @time 2018年11月4日16:14:48
