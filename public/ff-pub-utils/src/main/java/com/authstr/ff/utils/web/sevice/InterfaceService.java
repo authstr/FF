@@ -38,4 +38,10 @@ public interface InterfaceService {
     int remove(Class clazz, Serializable id);
 
     int removeIds(Class clazz, Serializable[] ids);
+
+    @Transactional
+    void remove(Object entity);
+
+    @Transactional
+    void removeList(List<Object> entityList);
 }

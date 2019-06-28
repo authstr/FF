@@ -23,8 +23,9 @@ public class BaseUser extends BaseModel {
 	private String password;
 
 //	性别
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "sex_id")
+	@OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+//	@JoinColumn(name = "sex_id")//默认关联id
+//	@JoinColumn(name="sex_id",referencedColumnName="id",nullable=false,insertable=false,updatable=false)
 	private BaseCode sex;
 
 	//邮箱

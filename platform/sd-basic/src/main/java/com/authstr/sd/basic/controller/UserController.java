@@ -4,8 +4,6 @@ import java.util.Map;
 
 import com.authstr.ff.model.platform.base.BaseCode;
 import com.authstr.ff.model.platform.base.BaseUser;
-import com.authstr.ff.model.platform.base.User;
-import com.authstr.ff.model.platform.base.UserExtend;
 import com.authstr.ff.utils.http.RequestPara;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,17 +38,29 @@ public class UserController extends AbstractController {
 //			UserExtend ue=new UserExtend();
 //			ue.setInterest("eeeeeeee");
 			BaseCode bc=new BaseCode();
-			bc.setName("测试5");
+			bc.setName("测试6");
 			bc.setCode_index(1);
 			bc.setCode_value("222");
 
 			BaseUser bu=new BaseUser();
-			//bu.setId(2);
-			bu=userService.get(BaseUser.class,2);
-			bu.setRemark("aaa2222");
+			bu.setUsername("NNNNN");
+			bu.setPassword("111111");
+			bu=userService.get(BaseUser.class,7);
+
+
+
+
+//			bu.setSex(bc);
+//			sex.setName("男111");
+//            userService.save(bc);
+//            userService.save(bu);
+//            userService.remove(bu);
+
+
+//			bu.setRemark("aaa2222");
 
 			//bc.setCreator_user(bu);
-			userService.save(bc);
+//			userService.save(bc);
 //			bu.setUsername("7777");
 //			bu.setPassword("46645");
 //			bu.setSex(bc);

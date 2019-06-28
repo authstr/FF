@@ -3,6 +3,7 @@ package com.authstr.ff.utils.web.sevice;
 import java.io.Serializable;
 import java.util.List;
 
+import com.authstr.ff.utils.exception.Assert;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -148,6 +149,23 @@ public class AbstractService implements InterfaceService{
     public int removeIds(Class clazz, Serializable[] ids) {
         return this.basicDao.removeIds(clazz, ids);
     }
+
+
+	@Override
+	@Transactional
+	public void remove(Object entity) {
+		this.basicDao.remove(entity);
+	}
+
+	@Override
+	@Transactional
+	public void removeList(List<Object> entityList) {
+		Assert.isTrue(null != entityList && entityList.size()!=0,"没有要删除的主体对象",true);
+		for (Object entity:entityList){
+			this.remove(entity);
+		}
+
+	}
 
 
 }
