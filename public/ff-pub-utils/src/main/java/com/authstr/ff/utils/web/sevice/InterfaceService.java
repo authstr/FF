@@ -35,6 +35,9 @@ public interface InterfaceService {
     @Transactional
     <T extends AbstractModel> void updata(T entity, boolean isCopy);
 
+    @Transactional
+    <T extends AbstractModel> Serializable saveOrUpdate(T entity);
+
     int remove(Class clazz, Serializable id);
 
     int removeIds(Class clazz, Serializable[] ids);
