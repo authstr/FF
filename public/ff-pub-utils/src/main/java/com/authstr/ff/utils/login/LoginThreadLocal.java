@@ -9,20 +9,19 @@ import org.apache.commons.logging.LogFactory;
  */
 public class LoginThreadLocal {
 	 private static Log log = LogFactory.getLog(LoginThreadLocal.class);
-	    private static ThreadLocal<LoginInfo> THREAD = new ThreadLocal();
-
-	    public static void set(LoginInfo school) {
-	        if (THREAD.get() != null && school != null) {
-	            if (THREAD.get() instanceof LoginInfo) {
-	                log.error((Object)("对LoginThreadLocal 进行set出错,已存在LoginInfo对象"));
-	            } else {
-	                log.error((Object)"对LoginThreadLocal 进行set出错,存在未知对象");
-	            }
-	            THREAD.set(null);
-	            THREAD.remove();
-	        }
-	        THREAD.set(school);
-	    }
+	 private static ThreadLocal<LoginInfo> THREAD = new ThreadLocal();
+	 public static void set(LoginInfo logininfo) {
+		if (THREAD.get() != null && logininfo != null) {
+			if (THREAD.get() instanceof LoginInfo) {
+				log.error((Object)("对LoginThreadLocal 进行set出错,已存在LoginInfo对象"));
+			} else {
+				log.error((Object)"对LoginThreadLocal 进行set出错,存在未知对象");
+			}
+			THREAD.set(null);
+			THREAD.remove();
+		}
+		THREAD.set(logininfo);
+	 }
 
 	    public static LoginInfo get() {
 	        return THREAD.get();

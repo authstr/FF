@@ -16,9 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement//开启事务管理
 @EntityScan(basePackages={"com.authstr.*"})
 public class ApplicationInit {
-	
 	public static void main(String[] args) {
-		System.out.println("basic");
 		SpringApplication.run(ApplicationInit.class, args);
 	}
 }

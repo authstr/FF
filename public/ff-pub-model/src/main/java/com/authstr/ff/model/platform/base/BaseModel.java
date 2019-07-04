@@ -36,7 +36,7 @@ public class BaseModel extends AbstractModel {
         LoginInfo loginInfo= LoginThreadLocal.get();
         if(null!=loginInfo&&null!=loginInfo.getUserID()){
             try {
-                setCreator_id(Integer.valueOf(loginInfo.getUserID()));
+                setCreator_id(loginInfo.getUserID());
             } catch (Exception e) {
             }
         }

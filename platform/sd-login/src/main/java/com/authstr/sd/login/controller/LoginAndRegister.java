@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.authstr.sd.login.utils.ConstantsUtils;
+import com.authstr.ff.model.platform.base.LoginConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import com.authstr.ff.utils.exception.MsgException;
 import com.authstr.ff.utils.http.CookieUtil;
 import com.authstr.ff.utils.http.RequestUtil;
 import com.authstr.ff.utils.login.LoginInfo;
-import com.authstr.ff.utils.login.LoginUtil;
+import com.authstr.ff.utils.login.LoginUtils;
 import com.authstr.ff.utils.web.controller.AbstractController;
 import com.authstr.sd.login.service.inter.LoginAndRegisterService;
 import com.authstr.sd.login.utils.LoginInfoEnum;
@@ -35,6 +35,7 @@ import com.authstr.sd.login.utils.ValidateCode;
 @Controller
 public class LoginAndRegister extends AbstractController{
 	Logger log = LoggerFactory.getLogger(this.getClass());
+
 	@Autowired
 	public LoginAndRegisterService loginService;
 	
@@ -71,7 +72,7 @@ public class LoginAndRegister extends AbstractController{
 		//model.setViewName(register_page_vm);
 		m.put("msg", loginService.register(username, pwd, email));
 		//移除验证码cookie
-		CookieUtil.removeCookie(response, ConstantsUtils.COOKIE_SCAPTCHA);
+		CookieUtil.removeCookie(response, LoginConstant.COOKIE_SCAPTCHA);
 		//model.setViewName(login_page_vm);
 		return m;
 	}
@@ -91,8 +92,8 @@ public class LoginAndRegister extends AbstractController{
 			 String username, String pwd,String verify) {
 		HttpSession session=request.getSession();
 		if (StringUtils.notText(username) && StringUtils.notText(pwd)) {//如果没有用户名和密码信息,判断是否已登录
-			if(LoginUtil.hasSession(session)||LoginUtil.hasCookie(request)){//如果cookie或session有登录信息,则已登录
-				LoginInfo li=LoginUtil.getLoginInfoByCookie(request);//获取登录信息
+			if(LoginUtils.hasSession(session)|| LoginUtils.hasCookie(request)){//如果cookie或session有登录信息,则已登录
+				LoginInfo li= LoginUtils.getLoginInfoByCookie(request);//获取登录信息
 				//这里通过登录信息,获取要跳转到主页
 				//这里还应该判断一下登录信息是否正确
 			    model.addObject("path", successpage);
@@ -117,7 +118,7 @@ public class LoginAndRegister extends AbstractController{
     		LoginInfo loginInfo=new LoginInfo();
     		loginInfo.setUserID(String.valueOf(u.getId()));
     		loginInfo.setUsername(u.getUsername());
-    		LoginUtil.createCookie(response, loginInfo);
+    		LoginUtils.createCookie(response, loginInfo);
     		//保存信息
             model.addObject("path", successpage);
             model.setViewName("success");
@@ -133,18 +134,18 @@ public class LoginAndRegister extends AbstractController{
             model.setViewName("login");
         }
 		//移除验证码cookie
-		CookieUtil.removeCookie(response, ConstantsUtils.COOKIE_SCAPTCHA);
+		CookieUtil.removeCookie(response, LoginConstant.COOKIE_SCAPTCHA);
 
 		return model;
 	}
 	@RequestMapping("/logout")
 	public String logout(ModelAndView model, HttpServletRequest request, HttpServletResponse response){
-		LoginUtil.logout(request, response);
+		LoginUtils.logout(request, response);
         return "redirect:/login";
 	}
 	
 	private void validateCode(String code, HttpServletRequest request) {
-        Cookie cookie = CookieUtil.getCookie(request, ConstantsUtils.COOKIE_SCAPTCHA);
+        Cookie cookie = CookieUtil.getCookie(request, LoginConstant.COOKIE_SCAPTCHA);
 
     	Assert.isTrue(cookie !=null,
 				LoginInfoEnum.The_VerfiCode_Is_Wrong.getCode(),LoginInfoEnum.The_VerfiCode_Is_Wrong.getExplain());//验证码错误

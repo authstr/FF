@@ -1,5 +1,6 @@
 package com.authstr.ff.utils.login;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
