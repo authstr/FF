@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<meta content="always" name="referrer">
+	<#include "../common/header.html">
+</head>
+<body>
+<div class="J_conWarp g-lr-mg g-warning-box">
+	<h4 class="g-title"> <a href="javascript:history.back()" style="font-size: 16px; color: black; " >< 返回</a></h4>
+	<div class="J_containerWarp">
+		<div  class="container-fluid g-t-mg2">
+			<div class="row" >
+				<div class="layui-col-md6" >
+					<form class="layui-form layui-form-pane" role="form" id="form1">
+						<input type="hidden" name="id" id="id" value="${id!?html}"/>
+
+						<div class="layui-form-item">
+							<label class="layui-form-label "><em class="text-red">*</em>编码名称</label>
+							<div class=" layui-input-inline" style="width: 500px">
+								<input type="text"  name="name" id="name"  placeholder="请输入编码名称" lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+
+						<div class="layui-form-item">
+							<label class="layui-form-label"><em class="text-red">*</em>编码值</label>
+							<div class=" layui-input-inline" style="width: 500px">
+								<input type="text"  name="code_value" id="code_value"  placeholder="请输入编码值" lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label class="layui-form-label"><em class="text-red">*</em>编码英文值</label>
+							<div class=" layui-input-inline" style="width: 500px">
+								<input type="text"  name="code_english" id="code_english"  placeholder="请输入编码英文值" lay-verify="required" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label class="layui-form-label"><em class="text-red">*</em>编码类型</label>
+							<div class=" layui-input-inline" style="width: 500px">
+								<select class="layui-select" id="type" name="type" >
+									<option value="" >请选择编码类型</option>
+									<option value="1" >国标</option>
+									<option value="2" >行标</option>
+									<option value="3" >其他</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label class="layui-form-label">上级编码</label>
+							<div class=" layui-input-inline" style="width: 500px">
+								<select class="layui-select" id="parent_code" name="parent_code" >
+									<option value="" >请选择上级编码</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label class="layui-form-label"><em class="text-red">*</em>所属系统</label>
+							<div class=" layui-input-inline" style="width: 500px">
+								<input type="text"  name="system_name" id="system_name"  placeholder="请输入编码英文值" lay-verify="required" autocomplete="off" class="layui-input">
+								<!--<select class="layui-select" id="system_name" name="system_name" >
+									<option >请选择编码类型</option>
+								</select>-->
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label class="layui-form-label">编码描述</label>
+							<div class=" layui-input-inline" style="width: 500px">
+								<!--<textarea name="" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>-->
+									<textarea type="text" class="layui-textarea" style="width:500px;height:120px;resize:none;" id="describe_info" name="describe_info"
+											  placeholder="编码描述"></textarea>
+							</div>
+						</div>
+
+						<div class="layui-form-item">
+							<label class="layui-form-label"><em class="text-red">*</em>状态</label>
+							<div class=" layui-input-inline" style="width: 500px">
+								<input type="radio" name="sex" value="1" title="启用" checked>
+								<input type="radio" name="sex" value="0" title="禁用" >
+							</div>
+						</div>
+
+					</form>
+					<div  class="layui-form-item">
+						<label class="layui-input-block"></label>
+						<a class="gbn gbn-m" href="javascript:" onclick="E.save();" >保存</a>
+						<a class="gbn gbn-m gbn-red" href="javascript:" onclick="history.back();" >返回</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<#include "../common/layui_init.html">
+<script type="text/javascript">
+    window.onload = window.onresize = function() {
+        $(".J_containerWarp").height($(window).height() - 60);
+        $(".J_containerWarp").niceScroll({});
+    }
+    var E={
+        save:function(){
+            $.post("${request.contextPath}/basecode/v1/save",$("#form1").serializeArray(),function(o){
+                if(o.code==0){
+                    layer.msg(o.msg);
+                    //Message.success("操作成功");
+                    location.href=document.referrer;
+                }else{
+                    layer.alert(o.msg, {
+                        skin: 'layui-layer-molv' //样式类名
+                        ,closeBtn: 0
+                        ,title:"错误提示"
+                    });
+                }
+            });
+        },
+        load:function(){
+            $.getJSON("${request.contextPath}/user/getById",{id:$("#id").val()},function(o){
+                if(o.code ==0){
+                    $("#form1").setFormValues(o.data);
+                }
+            });
+        }
+
+    }
+    $(function(){
+        var id=$("#id").val()
+        if(id!=null&&id!=""){
+            E.load();
+        }
+    });
+</script>
+<#include "../common/footer-inner.html">
+</html>
