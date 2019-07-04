@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import com.authstr.ff.utils.exception.Assert;
 
@@ -16,8 +17,12 @@ public class SpringUtils implements ApplicationContextAware {
         SpringUtils.applicationContext = applicationContext;
     }
 
-    private static ApplicationContext getContext() {
+    public static ApplicationContext getContext() {
         return applicationContext;
+    }
+
+    public static Environment getEnvironment(){
+        return SpringUtils.getContext().getEnvironment();
     }
 
     public static Object getBean(String beanId) {

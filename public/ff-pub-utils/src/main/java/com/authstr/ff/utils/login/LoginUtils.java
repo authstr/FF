@@ -6,16 +6,13 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.authstr.ff.utils.base.StringUtils;
-import com.authstr.ff.utils.encryption.SecKey;
 import com.authstr.ff.utils.encryption.ThreeDESUtils;
 import com.authstr.ff.utils.http.CookieUtil;
 import com.authstr.ff.utils.http.KeyConstant;
 import com.authstr.ff.utils.http.RequestUtil;
-import com.authstr.ff.utils.http.SessionModel;
 import com.authstr.ff.utils.http.SessionUtil;
 
 /**
@@ -23,8 +20,8 @@ import com.authstr.ff.utils.http.SessionUtil;
  * @time 2018年10月13日20:56:10
  * @author authstr
  */
-public class LoginUtil {
-	private static Logger log = LogManager.getLogger(LoginUtil.class);
+public class LoginUtils {
+	private static Logger log = LogManager.getLogger(LoginUtils.class);
 
 	
 	/**
@@ -43,7 +40,6 @@ public class LoginUtil {
 	 * cookie中是否存在Key为 KeyConstant.COOKIE_ID_AUTHSTR_A的对象
 	 * @param request
 	 * @return
-	 * @see  KeyConstant.COOKIE_ID_AUTHSTR_A
 	 * @time 2018年10月13日21:30:59
 	 * @author authstr
 	 */
@@ -54,7 +50,6 @@ public class LoginUtil {
 	/**
 	 * 使用登录信息对象创建Cookie
 	 * @param response
-	 * @param request
 	 * @param loginInfo
 	 * @time 2018年10月13日21:56:48
 	 * @author authstr
@@ -70,7 +65,7 @@ public class LoginUtil {
 	
 	/**
 	 * 将登录信息对象设置到Session中
-	 * @param request
+	 * @param session
 	 * @param loginInfo
 	 * @time 2018年10月13日21:57:04
 	 * @author authstr
@@ -89,14 +84,13 @@ public class LoginUtil {
     public static LoginInfo getLoginInfoByCookie(HttpServletRequest request){
     	String lpt = CookieUtil.getCookieValue(request,KeyConstant.COOKIE_ID_AUTHSTR_A);
 		if(!StringUtils.hasText(lpt))return null;
-		return LoginUtil.fromJSON(ThreeDESUtils.decode(KeyConstant.SecKey_KEY.getBytes() ,lpt));
+		return LoginUtils.fromJSON(ThreeDESUtils.decode(KeyConstant.SecKey_KEY.getBytes() ,lpt));
     }
     
 	/**
 	 * 获取session的LoginInfo对象
 	 * @param session
 	 * @return
-	 * @see KeyConstant.SESSION_ID_AUTHSTR_B
 	 * @time 2018年10月13日21:37:15
 	 * @author authstr
 	 */
@@ -135,7 +129,7 @@ public class LoginUtil {
 	 * @author authstr
 	 */
 	public static void logout( HttpServletRequest request, HttpServletResponse response){
-		LoginInfo li = LoginUtil.getLoginInfoByCookie(request);
+		LoginInfo li = LoginUtils.getLoginInfoByCookie(request);
 		if(li !=null){
 			//这里应该记录日志
 			log.info("退出登录,用户id["+li.getUserID()+"],用户名称["+li.getUsername()+"],终端类型["+RequestUtil.getEndPointType(request)+"]");

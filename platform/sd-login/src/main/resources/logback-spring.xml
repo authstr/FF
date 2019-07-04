@@ -30,10 +30,10 @@
 			</pattern>
 		</layout>
 
-		<!--拦截器,指定等级以下的日志不输出 -->
-		<!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
-			<!--<level>INFO</level>-->
-		<!--</filter>-->
+		 <!--拦截器,指定等级以下的日志不输出 -->
+        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+             <!--<level>INFO</level>-->
+        <!--</filter>-->
 	</appender>
 
 

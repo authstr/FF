@@ -82,11 +82,6 @@ public class UserController extends AbstractController {
 		 public Map query(QueryCommonPage query, HttpServletRequest request) {
 			Map m = super.success();
 //			TRACE < DEBUG < INFO < WARN < ERROR < FATAL
-			this.log.info("info");
-			this.log.warn("warn");
-			this.log.error("error");
-			this.log.debug("debug");
-			this.log.trace("trace");
 			RequestPara para=new RequestPara(request);
 			m.put("page", userService.query(query,para));
 			return m;

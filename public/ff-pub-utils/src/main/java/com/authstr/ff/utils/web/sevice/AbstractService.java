@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.authstr.ff.utils.exception.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +19,9 @@ import javax.transaction.Transactional;
 
 @Component
 public class AbstractService implements InterfaceService{
+
+	protected Logger log = LoggerFactory.getLogger(this.getClass());
+
 	  @Autowired
 	  @Qualifier(value="basicDaoImpl")
 	  public BasicDao basicDao;
