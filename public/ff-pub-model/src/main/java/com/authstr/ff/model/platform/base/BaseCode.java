@@ -20,29 +20,29 @@ public class BaseCode extends BaseModel {
 
 
 	//编码名称
-	@Column(nullable=true,unique= true,columnDefinition="VARCHAR(32) Comment '编码名称'")
+	@Column(nullable=false,unique= true,columnDefinition="VARCHAR(32) Comment '编码名称'")
 	private String name;
 
-	//编码序号
-	@Column(name = "code_index", length = 20)
+	//编码序号--父-子序号（序号自动+1）-前天隐藏
+	@Column(nullable=false,name = "code_index", length = 20)
 	private Integer code_index;
 
 	//编码值
-	@Column(name = "code_value", length = 64)
+	@Column(nullable=false,name = "code_value", length = 64)
 	private String code_value;
 
 
 	//编码英文值
-	@Column(name = "code_english", length = 20)
+	@Column(nullable=false,unique= true,name = "code_english", length = 20)
 	private String code_english;
 
 
 	//编码类型
-	@Column(name = "type", length = 4)
+	@Column(nullable=false,name = "type", length = 4)
 	private Integer type;
 
 	//所属系统
-	@Column(name = "system_name", length = 32)
+	@Column(nullable=false,name = "system_name", length = 32)
 	private String system_name;
 
 	//上级编码
