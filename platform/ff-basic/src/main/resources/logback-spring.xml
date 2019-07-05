@@ -7,7 +7,7 @@
 
 	<!-- 设置变量,通过定义的值会被插入到logger上下文中。定义变量后，可以使“${}”来使用变量-->
 	<!--<property name="logback.logdir" value="G:\springboot_log"/>
-	<property name="logback.appname" value="sd-basic"/>-->
+	<property name="logback.appname" value="ff-basic"/>-->
 
 	<!-- 从配置文件中获取变量,name:新的变量名; source:变量值的来源 -->
 	<springProperty scope="context" name="logback.appname" source="server.servlet.context-path"/>
