@@ -8,7 +8,6 @@ import com.authstr.ff.utils.exception.Assert;
 import com.authstr.ff.utils.http.RequestUtil;
 import com.authstr.ff.utils.login.LoginInfo;
 import com.authstr.ff.utils.login.LoginThreadLocal;
-import com.authstr.ff.utils.model.AbstractModel;
 import com.authstr.ff.utils.web.sevice.AbstractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,12 +83,12 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
 		LoginInfo loginInfo= LoginThreadLocal.get();
 		if(loginInfo!=null){
 			businessLog.setOperate_user(NumberUtils.parseNumber(loginInfo.getUserID(),Integer.class) );
+			businessLog.setCreator_id(loginInfo.getUserID());
 		}else{
 			businessLog.setOperate_user(null);
 		}
 		//业务过程
 		//业务结果
-		//业务结束时间
 
 		//保存到本地线程
 		LogThreadLocal.set(businessLog);

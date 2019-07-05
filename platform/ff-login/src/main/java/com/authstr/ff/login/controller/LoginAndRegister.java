@@ -8,13 +8,16 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
 
+import com.authstr.ff.auth.log.LogThreadLocal;
 import com.authstr.ff.login.utils.LoginInfoEnum;
+import com.authstr.ff.model.platform.base.BaseBusinessLog;
 import com.authstr.ff.model.platform.base.LoginConstant;
+import com.authstr.ff.utils.base.SpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,11 +42,10 @@ public class LoginAndRegister extends AbstractController{
 	@Autowired
 	public LoginAndRegisterService loginService;
 	
-	@Value("${authstr.login.successpage}")
-    private String successpage;
-	
+	//登录页面
 	String login_page_vm = "login";
-	
+	//注册页面
+
 	String register_page_vm = "register";
 	
 	@RequestMapping("/")
@@ -91,9 +93,15 @@ public class LoginAndRegister extends AbstractController{
 	private ModelAndView loginservice(ModelAndView model, HttpServletRequest request, HttpServletResponse response,
 			 String username, String pwd,String verify) {
 		HttpSession session=request.getSession();
-		if (StringUtils.notText(username) && StringUtils.notText(pwd)) {//如果没有用户名和密码信息,判断是否已登录
-			if(LoginUtils.hasSession(session)|| LoginUtils.hasCookie(request)){//如果cookie或session有登录信息,则已登录
-				LoginInfo li= LoginUtils.getLoginInfoByCookie(request);//获取登录信息
+		String successpage= SpringUtils.getEnvironment()
+				.getProperty(LoginConstant.LOGIN_SUCCESS_SKIP_PAGE_KEY,LoginConstant.LOGIN_SUCCESS_SKIP_PAGE_DEFAULT);
+
+		//如果没有用户名和密码信息,判断是否已登录
+		if (StringUtils.notText(username) && StringUtils.notText(pwd)) {
+			//如果cookie或session有登录信息,则已登录
+			if(LoginUtils.hasSession(session)|| LoginUtils.hasCookie(request)){
+				//获取登录信息
+				LoginInfo li= LoginUtils.getLoginInfoByCookie(request);
 				//这里通过登录信息,获取要跳转到主页
 				//这里还应该判断一下登录信息是否正确
 			    model.addObject("path", successpage);
@@ -105,10 +113,9 @@ public class LoginAndRegister extends AbstractController{
 				 return model;
 			}
         }
-		log.info("进入用户登录,ip["+RequestUtil.getRemoteAddress(request)+"]");
-		log.info("用户名["+username+"]");
-		log.info("密码["+pwd+"]");
-		log.info("验证码["+verify+"]");
+		//记录业务日志
+		LogThreadLocal.get().setTypy("用户登录");
+		LogThreadLocal.get().setBusiness_course("用户名["+username+"];"+"密码["+pwd+"]"+"验证码["+verify+"]");
     	try {
     		//验证验证码是否正确
     		validateCode(verify,request);
@@ -122,14 +129,14 @@ public class LoginAndRegister extends AbstractController{
     		//保存信息
             model.addObject("path", successpage);
             model.setViewName("success");
-            log.info("登录成功!跳转到["+successpage+"]");
+			LogThreadLocal.get().setBusiness_result("登录成功!跳转到["+successpage+"]");
         } catch (MsgException e) {
             model.addObject("msg", e.getMessage());
-            log.error("登录失败,原因["+e.getMessage()+"]");
+			LogThreadLocal.get().setBusiness_result("登录失败,原因["+e.getMessage()+"]");
             model.setViewName("login");
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("登录异常,原因["+e.getMessage()+"]");
+			LogThreadLocal.get().setBusiness_result("登录异常,原因["+e.getMessage()+"]");
             model.addObject("msg", LoginInfoEnum.Login_Unknow_Error);
             model.setViewName("login");
         }
@@ -140,13 +147,20 @@ public class LoginAndRegister extends AbstractController{
 	}
 	@RequestMapping("/logout")
 	public String logout(ModelAndView model, HttpServletRequest request, HttpServletResponse response){
+		//记录业务日志
+		LogThreadLocal.get().setTypy("用户注销");
 		LoginUtils.logout(request, response);
+		LogThreadLocal.get().setBusiness_course("成功");
         return "redirect:/login";
 	}
-	
+
+	/**
+	 * 检查验证码
+	 * @param code
+	 * @param request
+	 */
 	private void validateCode(String code, HttpServletRequest request) {
         Cookie cookie = CookieUtil.getCookie(request, LoginConstant.COOKIE_SCAPTCHA);
-
     	Assert.isTrue(cookie !=null,
 				LoginInfoEnum.The_VerfiCode_Is_Wrong.getCode(),LoginInfoEnum.The_VerfiCode_Is_Wrong.getExplain());//验证码错误
         Assert.isTrue(StringUtils.hasText(code),
@@ -155,7 +169,12 @@ public class LoginAndRegister extends AbstractController{
         Assert.isTrue(temp,
 				LoginInfoEnum.The_VerfiCode_Is_Wrong.getCode(),LoginInfoEnum.The_VerfiCode_Is_Wrong.getExplain());//验证码错误
     }
-	
+
+	/**
+	 * 响应验证码
+	 * @param request
+	 * @param response
+	 */
     @RequestMapping("scaptcha")
     public void generateScaptcha(HttpServletRequest request, HttpServletResponse response) {
         // 设置响应的类型格式为图片格式

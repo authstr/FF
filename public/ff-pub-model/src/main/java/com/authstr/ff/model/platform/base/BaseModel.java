@@ -1,5 +1,6 @@
 package com.authstr.ff.model.platform.base;
 
+import com.authstr.ff.utils.base.NumberUtils;
 import com.authstr.ff.utils.login.LoginInfo;
 import com.authstr.ff.utils.login.LoginThreadLocal;
 import com.authstr.ff.utils.model.AbstractModel;
@@ -52,12 +53,13 @@ public class BaseModel extends AbstractModel {
     }
 
 
-
+    @Override
     public Serializable getCreator_id(){
         return creator_id;
     }
+    @Override
     public void setCreator_id(Serializable creator_id){
-        this.creator_id = (Integer) creator_id;
+        this.creator_id = NumberUtils.toInteger(creator_id) ;
     }
 
 }

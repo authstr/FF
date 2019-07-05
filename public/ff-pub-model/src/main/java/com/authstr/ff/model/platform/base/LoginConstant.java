@@ -21,5 +21,18 @@ public class LoginConstant {
     /**
      * 验证码的 cookie 键值
      */
-    public static  final String  COOKIE_SCAPTCHA="scaptcha";
+    final public static String  COOKIE_SCAPTCHA="scaptcha";
+
+    /**
+     * 登录成功跳转页  配置文件 键
+     */
+    final public static String LOGIN_SUCCESS_SKIP_PAGE_KEY="authstr.login.successpage";
+
+    /**
+     * 默认的登录成功跳转页
+     */
+    final public static String LOGIN_SUCCESS_SKIP_PAGE_DEFAULT="/ff-basic/p/view/test/index";
+
+
+
 }

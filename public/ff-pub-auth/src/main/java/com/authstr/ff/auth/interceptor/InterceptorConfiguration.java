@@ -87,16 +87,16 @@ public class InterceptorConfiguration extends WebMvcConfigurerAdapter  {
 		Boolean isInterceptor=env.getProperty(LogConstant.IS_LOG_INTERCEPTOR_KEY,Boolean.class,LogConstant.IS_LOG_INTERCEPTOR_DEFAULT);
 		if(isInterceptor){
 			// 注册拦截器
-			InterceptorRegistration Li = registry.addInterceptor(new LogInterceptor());
+			InterceptorRegistration log = registry.addInterceptor(new LogInterceptor());
 			// 配置拦截的路径
-			Li.addPathPatterns("/**");
+			log.addPathPatterns("/**");
 			//获取不拦截的路径
 			String exclude=env.getProperty(LogConstant.LOG_INTERCEPTOR_EXCLUDE_KEY,LogConstant.LOG_INTERCEPTOR_EXCLUDE_DEFAULT);
 			//将String转换为list类型
 			List<String> exclude_list= DefaultConversionService.getSharedInstance().convert(exclude,List.class);
-			for(int i=0;i<exclude_list.size();i++){
+ 			for(int i=0;i<exclude_list.size();i++){
 				if(StringUtils.hasText(exclude_list.get(i))){
-					Li.excludePathPatterns(exclude_list.get(i));
+					log.excludePathPatterns(exclude_list.get(i));
 				}
 			}
 

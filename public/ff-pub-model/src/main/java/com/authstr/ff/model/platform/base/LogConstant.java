@@ -18,7 +18,7 @@ public class LogConstant {
     /**
      * 日志验证排除的路径 的默认值
      */
-    final public static  String LOG_INTERCEPTOR_EXCLUDE_DEFAULT="/*/skin/**";
+    final public static  String LOG_INTERCEPTOR_EXCLUDE_DEFAULT="/**/skins/**,/**/error/**";
 
 
 }

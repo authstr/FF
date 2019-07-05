@@ -111,7 +111,7 @@
 	<!-- 打印sql语句 -->
 	<logger name="org.hibernate.SQL" level="DEBUG"/>
 	<!-- 打印sql语句绑定的参数 -->
-	<logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+	<!--<logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>-->
 	<!-- 打印sql语句的返回值 -->
 	<!--<logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE"/>-->
 	<!-- 打印Hql语句 -->

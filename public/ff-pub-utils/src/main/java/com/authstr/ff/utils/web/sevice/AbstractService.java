@@ -17,6 +17,12 @@ import com.authstr.ff.utils.web.dao.BasicDao;
 
 import javax.transaction.Transactional;
 
+/**
+ * 服务层的超类
+ * 封装了基础的删改查和查重操作
+ * @author authstr
+ * 2019年7月5日21:23:48
+ */
 @Component
 public class AbstractService implements InterfaceService{
 

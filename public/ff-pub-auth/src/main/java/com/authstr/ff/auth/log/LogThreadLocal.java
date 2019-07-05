@@ -1,7 +1,6 @@
 package com.authstr.ff.auth.log;
 
 import com.authstr.ff.model.platform.base.BaseBusinessLog;
-import com.authstr.ff.utils.login.LoginInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

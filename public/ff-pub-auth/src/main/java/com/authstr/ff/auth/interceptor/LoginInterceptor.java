@@ -5,12 +5,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.authstr.ff.model.platform.base.LoginConstant;
+import com.authstr.ff.utils.login.LoginInfo;
+import com.authstr.ff.utils.login.LoginThreadLocal;
+import com.authstr.ff.utils.login.LoginUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import com.authstr.ff.utils.login.LoginThreadLocal;
-import com.authstr.ff.utils.login.LoginUtils;
-import com.authstr.ff.utils.login.LoginInfo;
 import com.authstr.ff.utils.base.SpringUtils;
 
 /**

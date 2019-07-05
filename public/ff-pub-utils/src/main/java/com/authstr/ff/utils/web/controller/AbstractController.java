@@ -17,7 +17,10 @@ import com.authstr.ff.utils.exception.MsgException;
 
 
 /**
- * 控制层的父类,主要对控制层的异常进行捕获,通过接口返回或者进行其他处理
+ * 控制层的超类,
+ * 主要对控制层的异常进行捕获,通过接口返回或者进行其他处理
+ * @author authstr
+ * 2019年7月5日21:21:36
  */
 @Component
 public class AbstractController {
@@ -28,6 +31,8 @@ public class AbstractController {
     @ResponseBody
 	//@JsonIgnoreProperties(value={"hibernateLazyInitializer"})
 	public Map exceptionHandler(Exception ex) {
+		//异常处理前,进行一次调用,具体实现应由子类实现
+		exceptionHandlerBefore(ex);
         HashMap<String, Object> model = new HashMap<String, Object>();
 		//如果是消息型异常
         if (ex instanceof MsgException) {
@@ -66,6 +71,8 @@ public class AbstractController {
 			ex.printStackTrace();
             this.log.error( "系统出现未知异常 :" + ex.getMessage());
         }
+		//异常处理后,进行一次调用,具体实现应由子类实现
+		exceptionHandlerAfter(ex,model);
         return model;
     }
 
@@ -75,4 +82,10 @@ public class AbstractController {
 		map.put(ControllerConstant.MSG,MsgEnum.SUCCESS.getMessage());
 		return map;
 	}
+
+	public  void exceptionHandlerBefore(Exception e){};
+
+	public  void exceptionHandlerAfter(Exception e,Map info){};
+
+
 }

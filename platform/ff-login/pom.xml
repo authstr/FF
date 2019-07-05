@@ -15,17 +15,27 @@
   <url>http://maven.apache.org</url>
 
   <dependencies>
+	  <dependency>
+		  <groupId>com.authstr</groupId>
+		  <artifactId>ff-pub-auth</artifactId>
+		  <version>1.0</version>
+	  </dependency>
 		<dependency>
 		  <groupId>com.authstr</groupId>
 		  <artifactId>ff-pub-model</artifactId>
 		  <version>1.0</version>
 		</dependency>
 
-	  	<dependency>
+	  <dependency>
+		  <groupId>com.authstr</groupId>
+		  <artifactId>ff-pub-basic</artifactId>
+		  <version>1.0</version>
+	  </dependency>
+	  <dependency>
 		  <groupId>com.authstr</groupId>
 		  <artifactId>ff-pub-utils</artifactId>
 		  <version>1.0</version>
-		</dependency>
+	  </dependency>
 
   </dependencies>
 

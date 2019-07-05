@@ -20,6 +20,7 @@
     <module>ff-pub-model</module>
     <module>ff-pub-utils</module>
    <module>ff-pub-auth</module>
+      <module>ff-pub-basic</module>
   </modules>
 
 </project>
