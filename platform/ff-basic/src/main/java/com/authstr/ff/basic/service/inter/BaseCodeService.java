@@ -1,4 +1,4 @@
-package com.authstr.sd.basic.service.inter;
+package com.authstr.ff.basic.service.inter;
 
 import com.authstr.ff.model.platform.base.BaseCode;
 import com.authstr.ff.model.platform.base.BaseUser;

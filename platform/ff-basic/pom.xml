@@ -8,12 +8,11 @@
 	  <version>1.0</version>
   </parent>
   <groupId>com.authstr</groupId>
-  <artifactId>sd-basic</artifactId>
+  <artifactId>ff-basic</artifactId>
   <version>1.0</version>
-  <name>sd-basic</name>
+  <name>ff-basic</name>
   <url>http://maven.apache.org</url>
 	<packaging>war</packaging>
-
   <dependencies>
 
 	  <dependency>

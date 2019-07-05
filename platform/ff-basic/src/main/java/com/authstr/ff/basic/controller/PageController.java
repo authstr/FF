@@ -1,4 +1,4 @@
-package com.authstr.sd.basic.controller;
+package com.authstr.ff.basic.controller;
 
 import java.util.Enumeration;
 

@@ -45,8 +45,8 @@
   </dependencies>
 
   <modules>
-    <module>sd-login</module>
-    <module>sd-basic</module>
+    <module>ff-login</module>
+    <module>ff-basic</module>
    <!--  <module>ff-pub-auth</module> -->
   </modules>
 </project>

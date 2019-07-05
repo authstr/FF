@@ -1,4 +1,4 @@
-package com.authstr.sd.basic;
+package com.authstr.ff.basic;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

@@ -1,4 +1,4 @@
-package com.authstr.sd.basic.utils;
+package com.authstr.ff.basic.utils;
 
 public enum LoginInfoEnum  {
 	/**

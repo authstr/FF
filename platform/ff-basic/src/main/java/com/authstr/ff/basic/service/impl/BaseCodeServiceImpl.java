@@ -1,19 +1,15 @@
-package com.authstr.sd.basic.service.impl;
+package com.authstr.ff.basic.service.impl;
 
+import com.authstr.ff.basic.dao.inter.BaseCodeDao;
 import com.authstr.ff.model.platform.base.BaseCode;
-import com.authstr.ff.model.platform.base.BaseUser;
 import com.authstr.ff.utils.base.StringUtils;
-import com.authstr.ff.utils.encryption.Md5Salt;
 import com.authstr.ff.utils.exception.Assert;
-import com.authstr.ff.utils.exception.ErrorException;
 import com.authstr.ff.utils.http.RequestPara;
 import com.authstr.ff.utils.model.ModelUtils;
 import com.authstr.ff.utils.page.QueryCommonPage;
 import com.authstr.ff.utils.page.ReturnPage;
 import com.authstr.ff.utils.web.sevice.AbstractService;
-import com.authstr.sd.basic.dao.inter.BaseCodeDao;
-import com.authstr.sd.basic.service.inter.BaseCodeService;
-import org.apache.commons.codec.digest.DigestUtils;
+import com.authstr.ff.basic.service.inter.BaseCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

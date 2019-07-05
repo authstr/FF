@@ -1,11 +1,11 @@
-package com.authstr.sd.basic.controller;
+package com.authstr.ff.basic.controller;
 
 import com.authstr.ff.model.platform.base.BaseCode;
 import com.authstr.ff.model.platform.base.BaseUser;
 import com.authstr.ff.utils.http.RequestPara;
 import com.authstr.ff.utils.page.QueryCommonPage;
 import com.authstr.ff.utils.web.controller.AbstractController;
-import com.authstr.sd.basic.service.inter.BaseCodeService;
+import com.authstr.ff.basic.service.inter.BaseCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
