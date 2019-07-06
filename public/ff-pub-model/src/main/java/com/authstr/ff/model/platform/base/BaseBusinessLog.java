@@ -43,7 +43,7 @@ public class BaseBusinessLog extends BaseModel  {
 	@Column(columnDefinition="bigint(20) Comment '操作用户'")
 	private Integer operate_user;		//操作用户
 
-	@Column(columnDefinition="bigint(2048) Comment '业务过程'")
+	@Column(columnDefinition="VARCHAR(2048) Comment '业务过程'")
 	private String business_course;		//业务过程
 
 	@Column(columnDefinition="bigint(64) Comment '业务结果'")

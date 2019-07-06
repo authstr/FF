@@ -9,6 +9,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 
+/**
+ * 使用model的超类,
+ * 定义了创建时间和更新时间 数据库映射
+ *
+ */
 @MappedSuperclass
 public abstract class  AbstractModel implements Serializable  {
 

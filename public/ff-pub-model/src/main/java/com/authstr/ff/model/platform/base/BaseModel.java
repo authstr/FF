@@ -19,7 +19,7 @@ public class BaseModel extends AbstractModel {
     private Integer id;
 
     //创建人id
-    @Column(columnDefinition="INTEGER Comment '创建人id'")
+    @Column(columnDefinition="bigint(20) Comment '创建人id'")
     protected Integer creator_id;
 
     @Override
