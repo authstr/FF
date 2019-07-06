@@ -6,7 +6,10 @@
     标注为@MappedSuperclass的类不能再标注@Entity或@Table注解，也无需实现序列化接口。
     但是如果一个标注为@MappedSuperclass的类继承了另外一个实体类或者另外一个同样标注了@MappedSuperclass的类的话，他将可以使用@AttributeOverride或@AttributeOverrides注解重定义其父类(无论是否是实体类)的属性映射到数据库表中的字段。
     此外，这样的类还可以直接标注@EntityListeners实体监听器，他的作用范围仅在其所有继承类中，并且实体监听器同样可以保被其子类继承或重载。
-    由于标注为@MappedSuperclass的类将不是一个完整的实体类，因此其不能标注@Table，并且无法使用@UniqueConstraint设置字段的Unique属性，
+    由于标注为@MappedSuperclass的类将不是一个完整的实体类，因此其不能标注@Table，并且无法使用@UniqueConstraint设置字段的Unique属性
+
+    使用位置:
+        baseModel  abstractModel
 
 @DiscriminatorValue 注解
     作用:用于多个实体类映射同一张表

@@ -14,7 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "base_business_log")	//业务日志表
 public class BaseBusinessLog extends BaseModel  {
 
-	@Column(nullable=false,length = 16,columnDefinition="VARCHAR(32) Comment '所属系统'")
+	@Column(nullable=false,columnDefinition="VARCHAR(32) Comment '所属系统'")
 	private String system_name;		//所属系统
 
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")

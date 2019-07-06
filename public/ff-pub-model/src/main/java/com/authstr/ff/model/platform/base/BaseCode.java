@@ -1,22 +1,11 @@
 package com.authstr.ff.model.platform.base;
 // EfficientWork  v2.28  2019-02-16 17:28:10
                
-import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.*;
-import com.authstr.ff.utils.model.AbstractModel;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.format.annotation.DateTimeFormat;
                
 @Entity
 @Table(name = "base_code")	//基本编码表
 public class BaseCode extends BaseModel {
-//	//主键
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-////	@Column(name = "id", unique = true, nullable = false, length = 20)
-//	private Integer id;
-
 
 
 	//编码名称

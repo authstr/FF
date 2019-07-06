@@ -9,6 +9,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * model 的父类
+ * 定义了主键的类型和创建时间 创建人的基本实现
+ * @author authstr
+ *
+ */
 @MappedSuperclass
 public class BaseModel extends AbstractModel {
 

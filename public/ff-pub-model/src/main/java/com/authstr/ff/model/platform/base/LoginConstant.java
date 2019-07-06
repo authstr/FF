@@ -14,8 +14,12 @@ public class LoginConstant {
 
 
     //配置文件中的登录url 的键和默认值
-    final public static String LOGIN_URL_KEY="authstr.login.interceptor.url";
+    final public static String LOGIN_URL_KEY="authstr.login.url";
     final public static String LOGIN_URL_DEFAULT="/ff-login/login";
+
+    //配置文件中的注销url 的键和默认值
+    final public static String LOGOUT_URL_KEY="authstr.logout.url";
+    final public static String LOGOUT_URL_DEFAULT="/ff-login/logout";
 
 
     /**

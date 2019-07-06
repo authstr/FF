@@ -14,46 +14,42 @@ public class BaseUser extends BaseModel {
 	//用户名
 	@NotBlank(message = "用户名不能为空")
 	@Length(max = 16,message = "用户名长度不能超过{max}位")
-	@Column(name = "username", length = 64)
+	@Column(columnDefinition = "VARCHAR(64) comment '用户名'")
 	private String username;
 
 	//密码
 	@NotBlank(message = "密码不能为空")
-	@Column(name = "password", length = 128)
+	@Column(columnDefinition = "VARCHAR(128) comment '密码'")
 	private String password;
 
 //	性别
 	@OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
 //	@JoinColumn(name = "sex_id")//默认关联id
 //	@JoinColumn(name="sex_id",referencedColumnName="id",nullable=false,insertable=false,updatable=false)
+//	@Column(columnDefinition = "bigint(20) comment '性别'")
 	private BaseCode sex;
 
 	//邮箱
 	@Email(message = "邮箱不符合规范")
-	@Column(name = "email", length = 64)
+	@Column(columnDefinition = "VARCHAR(64) comment '邮箱'")
 	private String email;
 
 	//手机号
-	@Column(name = "phone", length = 32)
+	@Column(columnDefinition = "VARCHAR(32) comment '手机号'")
 	private String phone;
 
 	//备注
 	@Length(max = 500,message = "备注长度不能超过{max}位")
-	@Column(name = "remark", length = 512)
+	@Column(columnDefinition = "VARCHAR(512) comment '备注'")
 	private String remark;
 
 	//状态
-	@Column(name = "status_id", length = 32)
+	@Column(columnDefinition = "bigint(20) comment '用户状态'")
 	private Integer status_id;
 
 
 
-//	public Integer getId(){
-//		return id;
-//	}
-//	public void setId(Integer id){
-//		this.id = id;
-//	}
+
 
 	public String getUsername(){
 		return username;
