@@ -8,11 +8,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.*;
 
 import com.authstr.ff.auth.log.LogThreadLocal;
 import com.authstr.ff.login.utils.LoginInfoEnum;
-import com.authstr.ff.model.platform.base.BaseBusinessLog;
 import com.authstr.ff.model.platform.base.LoginConstant;
 import com.authstr.ff.utils.base.SpringUtils;
 import org.slf4j.Logger;

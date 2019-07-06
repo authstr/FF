@@ -46,7 +46,7 @@ public class BaseMenu extends BaseModel  {
 	@Column(columnDefinition = "VARCHAR(1024) comment '菜单参数'")
 	private String para;
 
-	@Column(columnDefinition = "tinyint '菜单类型'")
+	@Column(columnDefinition = "tinyint comment '菜单类型'")
 	private Integer type ;
 
 	@Column(columnDefinition = "VARCHAR(512) comment '菜单图标的url'")

@@ -14,15 +14,6 @@ import java.util.Map;
 public class BasicController extends AbstractController {
 
 
-	@Override
-	public  void exceptionHandlerBefore(Exception e){
-
-	};
-
-	@Override
-	public  void exceptionHandlerAfter(Exception e,Map info){
-
-	};
 
 
 }

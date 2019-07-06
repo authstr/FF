@@ -31,8 +31,6 @@ public class AbstractController {
     @ResponseBody
 	//@JsonIgnoreProperties(value={"hibernateLazyInitializer"})
 	public Map exceptionHandler(Exception ex) {
-		//异常处理前,进行一次调用,具体实现应由子类实现
-		exceptionHandlerBefore(ex);
         HashMap<String, Object> model = new HashMap<String, Object>();
 		//如果是消息型异常
         if (ex instanceof MsgException) {
@@ -71,8 +69,6 @@ public class AbstractController {
 			ex.printStackTrace();
             this.log.error( "系统出现未知异常 :" + ex.getMessage());
         }
-		//异常处理后,进行一次调用,具体实现应由子类实现
-		exceptionHandlerAfter(ex,model);
         return model;
     }
 
@@ -83,9 +79,6 @@ public class AbstractController {
 		return map;
 	}
 
-	public  void exceptionHandlerBefore(Exception e){};
-
-	public  void exceptionHandlerAfter(Exception e,Map info){};
 
 
 }
