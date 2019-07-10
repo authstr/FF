@@ -76,6 +76,7 @@
         table_render:function () {
             layui_table.tableins=layui.table.render(layui_table.table_para);
         },
+
         //表格搜索 参数:搜索参数
         search:function (search_para) {
             var search_para={
@@ -84,23 +85,87 @@
                     curr:1
                 }
             }
-            console.log("das");
             layui.table.reload(layui_table.table_para.id, search_para)
         },
+
         //设置点击表格行,进行选中
         click_line_checked:function () {
-            layui.table.on('row('+layui_table.lay_attr+')',function(obj){
-                var checkCell = obj.tr.find(".layui-form-checkbox");
-                if(obj.tr.hasClass('layui-table-click')){
-                    obj.tr.removeClass('layui-table-click');
-                    checkCell.removeClass('layui-form-checked');
+            //https://fly.layui.com/jie/31942/
+            $(document).on("click", ".layui-table-body table.layui-table tbody tr", function() {
+                var index = $(this).attr('data-index');
+                var tableBox = $(this).parents('.layui-table-box');
+                if (tableBox.find(".layui-table-fixed.layui-table-fixed-l").length > 0) {
+                    tableDiv = tableBox.find(".layui-table-fixed.layui-table-fixed-l")
                 } else {
-                    obj.tr.addClass('layui-table-click ');
-                    checkCell.addClass('layui-form-checked');
+                    tableDiv = tableBox.find(".layui-table-body.layui-table-main")
+                }
+                // 加上下面的,限定只能选中一行数据
+                // var trs = tableDiv.find(".layui-unselect.layui-form-checkbox.layui-form-checked").parent().parent().parent();
+                // for (var i = 0; i < trs.length; i++) {
+                //     var ind = $(trs[i]).attr("data-index");
+                //     if (ind != index) {
+                //         var checkCell = tableDiv.find("tr[data-index=" + ind + "]").find("td div.laytable-cell-checkbox div.layui-form-checkbox I");
+                //         if (checkCell.length > 0) {
+                //             checkCell.click()
+                //         }
+                //     }
+                // }
+                var checkCell = tableDiv.find("tr[data-index=" + index + "]").find("td div.laytable-cell-checkbox div.layui-form-checkbox I");
+                if (checkCell.length > 0) {
+                    checkCell.click()
                 }
             });
-        }
+            $(document).on("click", "td div.laytable-cell-checkbox div.layui-form-checkbox", function(e) {
+                e.stopPropagation()
+            });
+        },
 
+        //获取当前选中行的数据
+        get_checked_data:function () {
+            //获取选中行对象
+            var checkStatus = layui.table.checkStatus(layui_table.table_para.id);
+            //获取数据
+            return checkStatus.data;
+        },
+
+        //要求选中一条数据,且返回id
+        selectOne:function () {
+            var table_data=layui_table.get_checked_data();
+            if(table_data==null){
+                layer.msg("无法获取选中数据",{icon:2});
+                return null;
+            }
+            if(table_data.length!=1){
+                if(table_data.length==0){
+                    layer.msg("至少要选中一条数据",{icon:2});
+                }else{
+                    layer.msg("只能选择一条数据",{icon:2});
+                }
+                return null;
+            }
+            var one_id=paraGetOneId(table_data);
+            if(one_id==null){
+                layer.msg("无法获取选中行id",{icon:2});
+                return null;
+            }
+            return one_id;
+        },
+
+        //要求选中多条数据,且返回id
+        selectMany:function () {
+            var table_data=layui_table.get_checked_data();
+            if(table_data==null){
+                layer.msg("无法获取选中数据",{icon:2});
+            }
+            if(table_data.length>0){
+                layer.msg("至少要选中一条数据",{icon:2});
+            }
+            var many_id=paraGetId(table_data);
+            if(many_id==null){
+                layer.msg("无法获取选中行id",{icon:2});
+            }
+            return many_id;
+        }
     }
 
 
@@ -154,6 +219,20 @@
 
             }
             return layui_date.render(copy_para);
+        }
+    }
+
+    /*
+    * 封装了 layer 的一些常用弹窗
+    * */
+    var layui_layer={
+        //进行错误提示
+        error_alert:function (msg) {
+            layer.alert(msg, {
+                skin: 'layui-layer-molv' //样式类名
+                ,closeBtn: 0
+                ,title:"错误提示"
+            });
         }
     }
 

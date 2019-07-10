@@ -1,0 +1,30 @@
+.lightgray_div{
+	background-color: #eee;
+	padding: 8px;
+	height: 100%;
+}
+.white_div{
+	background-color: #fffffa;
+	padding-left: 0px;
+	padding-right: 0px;
+	height: 100%;
+}
+.search_div{
+	margin-top: 8px;
+}
+.back_div{
+	border-bottom: 1px solid #ececec;
+	padding: 10px 0 10px 12px;
+	height: 35px;
+	margin: 0;
+	position: relative;"
+}
+.all_input_div{
+	margin-top: 8px;
+}
+.input_400px{
+	width: 400px;
+}
+.input_50b{
+	width: 50%;
+}
