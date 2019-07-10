@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Map;
 
 import static com.authstr.ff.utils.base.CollectionUtils.listGetOneData;
 
 @RestController
-@RequestMapping("basecode/v1")
+@RequestMapping("base_code/v1")
 public class BaseCodeController extends AbstractController {
 		@Autowired
 		private BaseCodeService baseCodeService;
@@ -40,7 +41,7 @@ public class BaseCodeController extends AbstractController {
 		public Map remove(HttpServletRequest request) {
 			Map m = super.success();
 			RequestPara para=new RequestPara(request);
-			m.put("data", baseCodeService.removeIds(BaseUser.class,para.getArray("ids")));
+			m.put("data", baseCodeService.removeIds(BaseCode.class,para.getArray("ids")));
 			return m;
 		}
 

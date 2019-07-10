@@ -47,6 +47,7 @@
 </div>
 </body>
 <#include "../common/layui_init.html">
+<!--表格工具类的按钮-->
 <script type="text/html" id="toolbarBox">
 	<div  style="margin-bottom: -5px">
 		<div class="layui-btn-container " style="float: left;">
@@ -57,10 +58,6 @@
 	</div>
 </script>
 <script type="text/javascript">
-	//设置表格的属性值
-	layui_table.lay_attr=$("#table_div").attr("lay-filter");
-	//设置点击表格行,进行选中
-	layui_table.click_line_checked();
 	//表头
 	var cols=[[
 		{field: 'id', title: 'id', sort: true,type:'checkbox', fixed: 'left'}
@@ -71,17 +68,21 @@
 		,{field: 'email', title: '邮箱'}
 		,{field: 'phone', title: '手机号'}
 		,{field: 'remark', title: '备注'}
+		,{field: 'gmt_create', title: '创建时间'
+			,templet:function (col) {
+				return layui_table.date_format(col.gmt_create,"yyyy-MM-dd hh:mm:ss")
+			}
+		}
 	]]
-	//设置表格渲染的参数
-	layui_table.set_table_data('${request.contextPath}/user/query',cols,"#toolbarBox");
-	//进行表格渲染
-	layui_table.table_render();
-	//渲染日期选择框
-	layui_date.range_date_render("#gmt_create","date","#gmt_create_start","#gmt_create_end");
-
-	$("#role").select2();
 	//页面要用的方法
 	table_func={
+		//表格初始化
+		init:function(){
+			//设置表格渲染的参数
+			layui_table.set_table_data('${request.contextPath}/user/query',cols,"#toolbarBox");
+			//进行表格渲染
+			layui_table.table_render();
+		},
 		//搜索
 		search:function(){
 			layui_table.search(paraArrayToLiteral($("#inquire").serializeArray()))
@@ -98,114 +99,16 @@
 			}
 		}
 	}
-
-
-
-
-layui.use(['layer', 'form','table','laydate'],function () {
-
-	var layer=layui.layer,layui_from=layui.form,layui_table=layui.table,lay_data=layui.laydate;
-
-	// //执行一个laydate实例
-	// var startData=lay_data.render({
-	// 	elem: '#startDate' //指定元素
-	// 	,type:'date'
-	// 	,btns: ['clear','now', 'confirm']
-	// 	,calendar: true
-	// });
-	// //执行一个laydate实例
-	// var endDate=lay_data.render({
-	// 	elem: '#endDate' //指定元素
-	// 	,type:'date'
-	// 	,btns: ['clear','now', 'confirm']
-	// 	,calendar: true
-	// });
-
-
-
-
-	//监听事件
-	layui_table.on('toolbar(main)', function(obj){
-		var checkStatus = layui_table.checkStatus(obj.config.id);
-		switch(obj.event){
-			case 'add':
-				layer.msg('添加');
-
-				break;
-			case 'delete':
-				var checkStatus = layui_table.checkStatus('table_div'); //idTest 即为基础参数 id 对应的值
-				var table_data =checkStatus.data;
-				if(table_data.length>0){
-					var ids=paraGetId(table_data);
-					var ids_para=ArrayToString("ids",ids);
-					if(table_data.length!=0){
-						$.post("${request.contextPath}/user/remove"+ids_para,function(o){
-							if(o.code==0){
-								layer.msg(o.msg);
-								layui.table.reload("table_div", table_render);
-							}else{
-								layer.alert(o.msg, {
-									skin: 'layui-layer-molv' //样式类名
-									,closeBtn: 0
-									,title:"错误提示"
-								});
-							}
-						});
-					}
-				}else{
-					layer.msg("至少要选中一条数据",{icon:2});
-				}
-
-
-				break;
-			case 'update':
-				layer.msg('编辑');
-				var checkStatus = layui_table.checkStatus('table_div'); //idTest 即为基础参数 id 对应的值
-				var table_data =checkStatus.data;
-				 console.log(checkStatus.data) //获取选中行的数据
-				// console.log(checkStatus.data.length) //获取选中行数量，可作为是否有选中行的条件
-				// console.log(checkStatus.isAll ) //表格是否全选
-				if(table_data.length==1){
-					var ids=paraGetOneId(table_data);
-					if(table_data.length!=0){
-						window.location.href="${request.contextPath}/p/view/test/edit?id="+ids;
-					}
-				}else{
-					if(table_data.length==0){
-						layer.msg("至少要选中一条数据",{icon:2});
-					}else{
-						layer.msg("只能选择一条数据",{icon:2});
-					}
-				}
-
-				break;
-
-				//var ids = jqGridTable1.selectOne();
-				// if(ids != null){
-				// 	window.location.href="${request.contextPath}/p/view/test/edit?id="+ids;
-				// }
-				// window.location.href="${request.contextPath}/p/view/test/edit";
-			case 'search':
-				table_render.where=paraArrayToLiteral($("#inquire").serializeArray());
-				layui.table.reload("table_div", table_render)
-				break;
-		};
+	$(function () {
+		//设置表格的属性值
+		layui_table.lay_attr=$("#table_div").attr("lay-filter");
+		//设置点击表格行,进行选中
+		layui_table.click_line_checked();
+		//渲染日期选择框
+		layui_date.range_date_render("#gmt_create","date","#gmt_create_start","#gmt_create_end");
+		$("#role").select2();
+		table_func.init();
 	});
-
-	//监听提交
-	// layui_from.on('submit(formDemo)', function(data){
-	// 	layer.msg(JSON.stringify(data.field));
-	// 	console.log(JSON.stringify(data.field));
-	// 	tableins.reload({where:{a:111}});
-	// 	lay_data_ins();
-	// });
-
-
-
-
-
-
-});
 </script>
 <#include "../common/footer-inner.html"> 
 </html>

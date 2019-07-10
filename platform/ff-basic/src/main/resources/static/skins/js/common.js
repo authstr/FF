@@ -98,8 +98,15 @@ function paraGetId(para) {
 
 }
 function isEmpty(str){
+    if(str==null){
+        return true;
+    }
+    str=str+"";
     return str.replace(/\s/g,"")==""
 };
+
+
+
 
 /**通过JSON字符串向界面对象放值的方法
  * 例子
