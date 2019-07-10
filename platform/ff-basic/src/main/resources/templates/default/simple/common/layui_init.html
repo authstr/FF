@@ -1,16 +1,160 @@
 <script>
-	// var layer ,layui_form,layui_table;
-	// layui.use(['layer', 'form','table'],function () {
-	// 	layer=layui.layer;
-	//
-	// });
-	// layer.msg("eee");
-	// console.log("ddd");
-	// console.log(layui.table);
-    var layer;
-    layui.use(['layer', 'form','table'],function () {
-    	layer=layui.layer;
-    });
+    //layui相关功能封装,
+    /*
+    layui相关功能封装
+    @authstr
+    * */
+
+    /*
+    * 参考示例:
+	* https://www.layui.com/doc/modules/table.html
+	* 封装了layui_table的一些常用功能
+    * */
+    var layui_table={
+        //表格原始属性的值, 如<table id="table_div" lay-filter="main" ></table> 中的mian
+        lay_attr:null,
+        //表格渲染结束后的表格对象
+        tableins:null,
+        //用于创建表格的参数
+        table_para:{
+            elem: '#table_div'
+            //容器唯一 id.id 是对表格的数据操作方法上是必要的传递条件
+            ,id:"table_id"
+            ,height: 600
+            //数据接口
+            // ,url: '${request.contextPath}/user/query'
+            //接口http请求类型
+            ,method:'get'
+            //默认每页数据条数
+            ,limit:20
+            //开启分页
+            ,page: true
+            //开启表格头部工具栏区域
+            // ,toolbar:"#toolbarDemo"
+            //默认工具
+            ,defaultToolbar:['filter', 'exports', 'print']
+            //其他请求参数
+            ,where: {}
+            //定义请求时相关分页参数
+            ,request: {
+                //页码的参数名称,默认：page
+                pageName: 'page'
+                //每页数据量的参数名,默认：limit
+                ,limitName: 'rows'
+            }
+            //对分页返回数据进行转换
+            ,parseData: function(res){
+                return {
+                    //解析接口状态
+                    "code": res.code,
+                    //解析提示文本
+                    "msg": res.msg,
+                    //解析数据长度
+                    "count": res.page.total,
+                    //解析数据列表
+                    "data": res.page.record
+                };
+            }
+            // ,cols: [[ //表头
+            //     {field: 'id', title: 'id', sort: true,type:'checkbox', fixed: 'left'}
+            //     ,{field: 'id', title: 'ID'}
+            //     ,{field: 'username', title: '用户名'}
+            //     ,{field: 'password', title: '密码'}
+            //     ,{field: 'sex', title: '性别'}
+            //     ,{field: 'email', title: '邮箱'}
+            //     ,{field: 'phone', title: '手机号'}
+            //     ,{field: 'remark', title: '备注'}
+            // ]]
+        },
+        //设置表格渲染的核心参数 url和表头信息,表格头部工具栏区域(script的id)
+        set_table_data:function (url,cols,toolbar) {
+            layui_table.table_para.toolbar=toolbar;
+            layui_table.table_para.url=url;
+            layui_table.table_para.cols=cols
+        },
+        //表格渲染
+        table_render:function () {
+            layui_table.tableins=layui.table.render(layui_table.table_para);
+        },
+        //表格搜索 参数:搜索参数
+        search:function (search_para) {
+            var search_para={
+                where:search_para,
+                page:{
+                    curr:1
+                }
+            }
+            console.log("das");
+            layui.table.reload(layui_table.table_para.id, search_para)
+        },
+        //设置点击表格行,进行选中
+        click_line_checked:function () {
+            layui.table.on('row('+layui_table.lay_attr+')',function(obj){
+                var checkCell = obj.tr.find(".layui-form-checkbox");
+                if(obj.tr.hasClass('layui-table-click')){
+                    obj.tr.removeClass('layui-table-click');
+                    checkCell.removeClass('layui-form-checked');
+                } else {
+                    obj.tr.addClass('layui-table-click ');
+                    checkCell.addClass('layui-form-checked');
+                }
+            });
+        }
+
+    }
+
+
+
+    /*
+    * 参考示例:
+    *  https://www.layui.com/doc/modules/laydate.html
+    * 封装了layui 日期控件的一些常用功能
+    * */
+    var layui_date={
+        //创建日期控件的常用参数
+        data_para:{
+            //工具按钮,分别是"清除","现在","确认"
+            btns: ['clear','now', 'confirm']
+            //指定元素
+            // elem: '#startDate'
+            //指定类类型 year	年选择器 month年月选择器	date日期选择器	time时间选择器	datetime日期时间选择器
+            ,type:'date'
+            //是否显示公历节日
+            ,calendar: true
+        },
+
+        //通过一个字面量数组,创建日期控件
+        render:function (para) {
+            return layui.laydate.render(para);
+        },
+        //通过控件元素(id)和日期类型,创建日期控件
+        date_render:function (elem,type) {
+            //复制日期控件的参数,防止生成多个日期控件,共用一个参数对象
+            var copy_para=JSON.parse(JSON.stringify(layui_date.data_para))
+            copy_para.elem=elem;
+            copy_para.type=type;
+            return layui_date.render(copy_para);
+        },
+        //通过控件键元素(id)和日期类型,开始时间回传元素,结束时间回传元素,创建一个日期范围选择器
+        range_date_render:function (elem,type,start_elem,end_elem) {
+            var copy_para=JSON.parse(JSON.stringify(layui_date.data_para))
+            copy_para.elem=elem;
+            copy_para.type=type;
+            //设置启用日期范围,间隔符为"~"
+            copy_para.range="至";
+            //设置选择日期后的回调函数
+            copy_para.done=function (value, date, endDate) {
+                if(!isEmpty(value)){
+                    //获取开始时间和结束时间的字符串
+                    var two_date=value.split(copy_para.range);
+                    //将开始时间和结束时间设置到指定的元素上
+                    $(start_elem).val(two_date[0].trim());
+                    $(end_elem).val(two_date[1].trim());
+                }
+
+            }
+            return layui_date.render(copy_para);
+        }
+    }
 
 </script>
-

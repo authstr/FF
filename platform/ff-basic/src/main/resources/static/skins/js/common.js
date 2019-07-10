@@ -23,7 +23,6 @@ function paraArrayToLiteral(para) {
     for(var i=0;i<para.length;i++){
         literal[para[i].name]=para[i].value
     }
-    console.log(literal);
     return literal;
 }
 
@@ -98,6 +97,9 @@ function paraGetId(para) {
     return ids;
 
 }
+function isEmpty(str){
+    return str.replace(/\s/g,"")==""
+};
 
 /**通过JSON字符串向界面对象放值的方法
  * 例子

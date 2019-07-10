@@ -17,15 +17,19 @@ public class QueryCommonPage implements QueryPage {
     //搜索值
     private String search;
 
+    @Override
     public Integer getRows() {
         return rows;
     }
+    @Override
     public void setRows(Integer rows) {
         this.rows = rows;
     }
+    @Override
     public Integer getPage() {
         return page;
     }
+    @Override
     public void setPage(Integer page) {
         this.page = page;
     }

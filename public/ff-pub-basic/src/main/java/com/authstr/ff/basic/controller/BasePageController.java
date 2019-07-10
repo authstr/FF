@@ -43,8 +43,10 @@ public class BasePageController extends AbstractController {
      * @param model
      */
     public void setCommonPara(ModelAndView model){
-        model.addObject("userid", LoginThreadLocal.get().getUserID());
-        model.addObject("username", LoginThreadLocal.get().getUsername());
+        if( LoginThreadLocal.get()!=null){
+            model.addObject("userid", LoginThreadLocal.get().getUserID());
+            model.addObject("username", LoginThreadLocal.get().getUsername());
+        }
         model.addObject("skin", getSystemSkin());
     }
 
