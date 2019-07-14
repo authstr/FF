@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.authstr.ff.utils.exception.Assert;
+import com.authstr.ff.utils.model.ModelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -40,9 +41,9 @@ public class AbstractService implements InterfaceService{
 		* @time 2018年11月4日 下午4:01:10
 		* @author authstr
 		*/
-	  	@Override
+		@Override
 		public <T> T get(Class<T> clazz, Serializable id){
-		return basicDao.get(clazz, id);
+			return basicDao.get(clazz, id);
 		}
 	
 	
@@ -136,17 +137,45 @@ public class AbstractService implements InterfaceService{
         basicDao.updateList(listEntity);
     }
 
+    /**
+     * 更新
+     * @param entity  更新的实体对象
+     * @param isCover 是否覆盖更新 true 是，false 否.
+     * @param <T>
+     */
     @Override
-	@Transactional
-    public <T extends AbstractModel> void updata(T entity, boolean isCopy){
-    	if(isCopy){
-    		  Object no = get(entity.getClass(), (entity).getId().toString());
-    		  if(no==null)throw new ErrorException("该model没有id,无法更新");
-    		  BeanUtils.copyProperties(entity, no);
-    		  basicDao.update((AbstractModel)no);
-    	}else{
-    		 basicDao.update(entity);
-    	}
+    @Transactional
+    public <T extends AbstractModel> void updata(T entity, boolean isCover) {
+        if (isCover) {
+            //如果是覆盖更新，直接调用更新
+            basicDao.update(entity);
+        } else {
+            //如果不是，先查询，再更新
+            Object no = get(entity.getClass(), (entity).getId());
+            if (no == null) {
+            	throw new ErrorException("该model没有id,无法更新");
+            }
+            BeanUtils.copyProperties(entity, no);
+            basicDao.update((AbstractModel) no);
+        }
+    }
+
+    /**
+     * 保存或更新，更新时为非覆盖更新
+     * @param entity 实体对象
+     * @return id
+     * @time 2018年11月4日 下午4:27:26
+     * @author 桔子
+     */
+    @Override
+    @Transactional
+    public <T extends AbstractModel> Serializable saveOrUpdate(T entity) {
+        if (ModelUtils.isNew(entity)) {
+            return this.basicDao.save(entity);
+        } else {
+            this.updata(entity);
+            return entity.getId();
+        }
     }
 
     @Override

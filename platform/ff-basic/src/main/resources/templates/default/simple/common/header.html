@@ -25,10 +25,10 @@
 
 
 	<!-- 公共样式 -->
-	<link rel="stylesheet" href="${request.contextPath}/skins/default/simple/css/common.css" />
+	<link rel="stylesheet" href="${request.contextPath}/skins/css/common.css" />
 
 	<!--滚动条美化-->
-	<script type="text/javascript" src="${request.contextPath}/skins/default/simple/plugin/jquery/jquery.nicescroll.js"></script>
+	<script type="text/javascript" src="${request.contextPath}/skins/js/jquery/jquery.nicescroll.js"></script>
 
 	<!--md5加密-->
 	<script type="text/javascript" src="${request.contextPath}/skins/js/jquery.md5.js"></script>
@@ -37,9 +37,21 @@
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
 
+	<!--模板生成工具-->
+	<script src="${request.contextPath}/skins/js/art-template/template-web.js"></script>
+	<!--模板生成工具-功能扩展-->
+	<script type="text/javascript" src="${request.contextPath}/skins/js/art-template/template-plus.js"></script>
+
 <style>
 	html,body{
 		overflow-y: hidden;
 		height: 100%;
 	}
 </style>
+<script>
+	//给使用输入框所在的div增加滚动条,并在屏幕变动时,页面大小调整
+	window.onload = window.onresize = function() {
+		$(".all_input_div").height($(window).height()-30);
+		$(".all_input_div").niceScroll({});
+	}
+</script>

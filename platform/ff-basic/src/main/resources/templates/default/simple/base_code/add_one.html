@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<meta content="always" name="referrer">
+	<#include "../common/header.html">
+
+</head>
+<body>
+<!--最外面的灰底框,用于与ifram区别开-->
+<div class="col-xs-12 lightgray_div" >
+	<!--白底框-->
+	<div class="col-xs-12 white_div">
+		<!--返回按钮-->
+		<h4 class="back_div"> <a href="javascript:history.back()" style="font-size: 16px; color: black; " >< 返回</a></h4>
+		<div class="row all_input_div" style="margin-top: 8px">
+			<div class="col-xs-6">
+				<form class="form-horizontal" role="form" id="form1">
+					<input type="hidden" name="id" id="id" value="${id!?html}"/>
+
+					<div class="form-group">
+						<label class="col-xs-2 control-label"><em class="text-red">*</em>编码序号</label>
+						<div class="col-xs-10">
+							<input type="text" class="form-control input_50b"  name="code_index" id="code_index" oninput="value=value.replace(/[^\d]/g,'')"
+								   placeholder="请输入编码序号">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-2 control-label"><em class="text-red">*</em>编码名称</label>
+						<div class="col-xs-10">
+							<input type="text" class="form-control input_50b"   id="name" name="name"
+								   placeholder="请输入编码名称">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-xs-2 control-label"><em class="text-red">*</em>编码英文名</label>
+						<div class="col-xs-10">
+							<input type="text" class="form-control input_50b"  name="code_english" id="code_english"
+								   placeholder="请输入英文名" >
+						</div>
+					</div>
+
+
+
+					<div class="form-group">
+						<label class="col-xs-2 control-label"><em class="text-red">*</em>编码值</label>
+						<div class="col-xs-10">
+							<input type="text" class="form-control input_50b"  name="code_value" id="code_value"
+								   placeholder="请输入编码值">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-xs-2 control-label">备注</label>
+						<div class="col-xs-10">
+							<textarea type="text" class="form-control input_50b" style="height:120px;resize:none;" id="describe_info" name="describe_info"></textarea>
+						</div>
+					</div>
+
+				</form>
+				<div  class="form-group ">
+					<label class="col-xs-2 control-label"></label>
+					<a class="gbn gbn-m" href="javascript:" onclick="E.save();" >保存</a>
+					<a class="gbn gbn-m gbn-red" href="javascript:" onclick="history.back();" >返回</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+<#include "../common/layui_init.html">
+<script type="text/javascript">
+	var E={
+		save:function(){
+			var para=paraArrayToLiteral($("#form1").serializeArray());
+			$.post("${request.contextPath}/base_code/save_one",para,function(o){
+				if(o.code==0){
+					layer.msg(o.msg);
+					location.href=document.referrer;
+				}else{
+					layui_layer.error_alert(o.msg);
+				}
+			});
+		}
+	}
+	$(function(){
+		var id=$("#id").val()
+		if(id!=null&&id!=""){
+			E.load();
+		}
+	});
+</script>
+<#include "../common/footer-inner.html">
+</html>

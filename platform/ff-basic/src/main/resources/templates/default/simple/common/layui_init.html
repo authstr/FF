@@ -157,7 +157,7 @@
             if(table_data==null){
                 layer.msg("无法获取选中数据",{icon:2});
             }
-            if(table_data.length>0){
+            if(table_data.length<1){
                 layer.msg("至少要选中一条数据",{icon:2});
             }
             var many_id=paraGetId(table_data);

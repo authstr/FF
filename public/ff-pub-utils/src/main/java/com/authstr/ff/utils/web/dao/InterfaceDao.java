@@ -11,9 +11,7 @@ public interface InterfaceDao {
 
 	Session getSession();
 
-
 	<T> List<T> getBySQL(String sql, String[] fields, Object[] values, Class<T> returnType);
-
 
 	void flushSession();
 
@@ -28,12 +26,9 @@ public interface InterfaceDao {
 
 	<T extends AbstractModel> Serializable save(T entity, Boolean isValidation);
 
-	abstract List<Serializable> saveList(List<? extends AbstractModel> entityList);
+	List<Serializable> saveList(List<? extends AbstractModel> entityList);
 
-
-	 
-	 public Integer remove(Class clazz, Serializable id);
-
+	Integer remove(Class clazz, Serializable id);
 
 	<T extends AbstractModel> void update(T entity);
 
@@ -42,8 +37,8 @@ public interface InterfaceDao {
 
 	Integer updateList(List<? extends AbstractModel> entityList);
 
-	public void remove(Object entity);
-	 public Integer removeIds(Class clazz, Serializable[] ids);
+	void remove(Object entity);
+	Integer removeIds(Class clazz, Serializable[] ids);
 
 
 	

@@ -21,6 +21,7 @@
 }
 .all_input_div{
 	margin-top: 8px;
+	overflow: auto;
 }
 .input_400px{
 	width: 400px;

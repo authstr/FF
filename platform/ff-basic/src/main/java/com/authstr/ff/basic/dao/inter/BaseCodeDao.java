@@ -12,5 +12,7 @@ public interface BaseCodeDao extends InterfaceDao{
 
 	ReturnPage query(QueryCommonPage query, RequestPara para);
 
+    List<Map> getCodeName(RequestPara para);
+
     List<Map> get(RequestPara para);
 }

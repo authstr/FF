@@ -1,6 +1,8 @@
 package com.authstr.ff.model.platform.base;
 // EfficientWork  v2.28  2019-02-16 17:28:10
                
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
                
 @Entity
@@ -9,52 +11,48 @@ public class BaseCode extends BaseModel {
 
 
 	//编码名称
-	@Column(nullable=false,unique= true,columnDefinition="VARCHAR(32) Comment '编码名称'")
+	@Length(max = 20)
+	@Column(nullable=false ,columnDefinition="VARCHAR(32) Comment '编码名称'")
 	private String name;
 
-	//编码序号--父-子序号（序号自动+1）-前天隐藏
-	@Column(nullable=false,name = "code_index", length = 20)
+	//编码序号
+	@Column(nullable=false ,columnDefinition="tinyint(4) Comment '编码序号'")
 	private Integer code_index;
 
 	//编码值
-	@Column(nullable=false,name = "code_value", length = 64)
+	@Length(max = 64)
+	@Column(nullable=false ,columnDefinition="VARCHAR(64) Comment '编码值'")
 	private String code_value;
 
 
-	//编码英文值
-	@Column(nullable=false,unique= true,name = "code_english", length = 20)
+	//编码英文名
+	@Length(max = 20)
+	@Column(nullable=false ,columnDefinition="VARCHAR(32) Comment '编码英文名'")
 	private String code_english;
 
 
 	//编码类型
-	@Column(nullable=false,name = "type", length = 4)
+	@Column(nullable=false ,columnDefinition="tinyint(4) Comment '编码类型'")
 	private Integer type;
 
 	//所属系统
-	@Column(nullable=false,name = "system_name", length = 32)
+	@Column(nullable=false ,columnDefinition="VARCHAR(32) Comment '所属系统'")
 	private String system_name;
 
-	//上级编码
-	@Column(name = "parent_code", length = 20)
-	private Integer parent_code;
+//	//上级编码
+//	@Column(name = "parent_code", length = 20)
+//	private Integer parent_code;
 
 	//编码描述
-	@Column(name = "describe_info", length = 128)
+	@Length(max = 128)
+	@Column(columnDefinition="VARCHAR(128) Comment '编码描述'")
 	private String describe_info;
 
 	//状态
-	@Column(name = "status", length = 20)
+	@Column(nullable=false ,columnDefinition="tinyint(4) Comment '状态'")
 	private Integer status;
 
 
-
-//	public Integer getId(){
-//		return id;
-//	}
-//	public void setId(Integer id){
-//		this.id = id;
-//	}
-                 
 
 	public String getName(){
 		return name;
@@ -101,15 +99,14 @@ public class BaseCode extends BaseModel {
 	}
                  
 
-	public Integer getParent_code(){
-		return parent_code;
-	}
-                 
-	public void setParent_code(Integer parent_code){
-		this.parent_code = parent_code;
-	}
+//	public Integer getParent_code(){
+//		return parent_code;
+//	}
+//
+//	public void setParent_code(Integer parent_code){
+//		this.parent_code = parent_code;
+//	}
 
-                 
 
 	public Integer getStatus(){
 		return status;

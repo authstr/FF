@@ -2,6 +2,7 @@ package com.authstr.ff.utils.model;
 
 import com.authstr.ff.utils.login.LoginInfo;
 import com.authstr.ff.utils.login.LoginThreadLocal;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public abstract class  AbstractModel implements Serializable  {
 
 
 	//创建时间
+	//定义前台到后台的格式转换
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(columnDefinition="datetime Comment '创建时间'")
